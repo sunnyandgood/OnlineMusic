@@ -1,0 +1,15 @@
+# Maven #
+target/
+
+# IDEA #
+.idea/
+*.iml
+*.class
+
+# Eclipse #
+.settings/
+.classpath
+.project
+
+# jrebel #
+src/main/resources/rebel.xml
