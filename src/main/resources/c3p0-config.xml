@@ -9,7 +9,7 @@
         <property name="user">root</property>
         <property name="password">root</property>
         <property name="driverClass">com.mysql.jdbc.Driver</property>
-        <property name="jdbcUrl">jdbc:mysql:///language</property>
+        <property name="jdbcUrl">jdbc:mysql://localhost:3306/onlinemusic</property>
         <property name="maxPoolSize">15</property>
     </default-config> <!-- This app is massive! -->
 </c3p0-config>
