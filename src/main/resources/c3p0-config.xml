@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 在每一个xml文件中有且只有一个根节点
+	 在根节点下可以自定义子节点
+	 节点必须有头有尾
+	 节点可以有属性
+ -->
+<c3p0-config>
+    <default-config>
+        <property name="user">root</property>
+        <property name="password">root</property>
+        <property name="driverClass">com.mysql.jdbc.Driver</property>
+        <property name="jdbcUrl">jdbc:mysql:///language</property>
+        <property name="maxPoolSize">15</property>
+    </default-config> <!-- This app is massive! -->
+</c3p0-config>
