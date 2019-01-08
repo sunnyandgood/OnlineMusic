@@ -14,7 +14,7 @@ public class SongBean {
     private String song_name;
     private String song_singer;
     private Integer type_id;
-    private Double song_size;
+    private String song_size;
     private String song_url;
     private String song_format;
     private Integer song_clicks;

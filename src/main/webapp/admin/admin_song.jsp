@@ -29,6 +29,7 @@
                 <div class="btn btn-primary" onclick="removeAll()">批量删除</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="btn btn-primary" onclick="add()">添加</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="btn btn-primary" onclick="addToExcel()">导出到Excel</div>
+                <input type="hidden" id="deleteByIdFlag" value="${deleteByIdFlag }" />
             </div>
         </div>
     </div>
@@ -81,10 +82,10 @@
             }
         },{
             field: 'song_size',
-            title: '歌曲大小'
+            title: '文件大小'
         },{
             field: 'song_url',
-            title: '歌曲地址'
+            title: '文件地址'
         },{
             field: 'song_format',
             title: '歌曲格式'
@@ -135,17 +136,19 @@
             layer.open({
                 type: 2,
                 area: ['800px', '500px'],
-                content: '${ctx}/page/questionUpdate/' + row['questionId'] //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                content: '${ctx}/SongServlet?state=selectById&songId=' + row['song_id'] //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
             });
         },
         'click .remove': function (e, value, row) {
             if(confirm('是否删除')){
                 $.post('${ctx}/SongServlet?state=deleteById&songId=' + row['song_id'],function(r){
 
-                    if(r.code==200){
+                    // if(r.code==200){
                         $('#table').bootstrapTable('refresh');
-                    }
-                    layer.msg(r.message);
+                    // }
+
+                    alert(document.getElementById('deleteByIdFlag').value);
+                    // layer.msg()
                 });
             }
         }
@@ -175,17 +178,6 @@
             area: ['800px', '500px'],
             content: '${ctx}/page/questionAdd/' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
         });
-    }
-
-    function addFromExcel() {
-        layer.open({
-            type: 2,
-            area: ['500px', '350px'],
-            content: ['${ctx}/page/questionUp/', 'no'] //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-        });
-        <%--$.post('${ctx}/question/addFromExcel',function (r) {--%>
-        <%--layer.msg(r.message);--%>
-        <%--});--%>
     }
 
     function addToExcel() {

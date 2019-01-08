@@ -9,6 +9,8 @@ import java.util.List;
  * @Date: 2019/1/7 19:08
  */
 public interface SongService {
-    public List<SongBean> selectAll();
-    public Boolean deleteById(int song_id);
+    List<SongBean> selectAll();
+    Boolean deleteById(int song_id);
+    List<SongBean> selectById(int song_id);
+    Boolean updateById(SongBean songBean);
 }
