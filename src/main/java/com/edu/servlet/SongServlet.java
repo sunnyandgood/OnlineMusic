@@ -1,6 +1,7 @@
 package com.edu.servlet;
 
 import com.edu.bean.SongBean;
+import com.edu.bean.SongDisplayBean;
 import com.edu.service.SongService;
 import com.edu.service.impl.SongServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -78,7 +79,7 @@ public class SongServlet extends HttpServlet {
 
         Boolean flag = songService.updateById(songBean);
         request.setAttribute("updateByIdFlag",flag);
-        request.getRequestDispatcher("./admin/update/song_update.jsp").forward(request,response);
+        request.getRequestDispatcher("./SongServlet?state=selectById&songId=" + song_id).forward(request,response);
     }
 
     private void selectById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -127,7 +128,7 @@ public class SongServlet extends HttpServlet {
 //        System.out.println(pageNumber);
 
         PageHelper.startPage(pageNumber, pageSize);
-        List<SongBean> songs = songService.selectAll();
+        List<SongDisplayBean> songs = songService.selectAll();
 
         //这里用了Gson来实现将List这个对象的集合转换成字符串
         Gson gson = new Gson();

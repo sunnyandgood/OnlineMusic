@@ -63,23 +63,23 @@
             field: 'song_singer',
             title: '歌手'
         }, {
-            field: 'type_id',
-            title: '歌曲类型',
-            formatter:function(v1){
-                if(v1==1){
-                    return '流行金曲';
-                }else if(v1==2){
-                    return '经典老歌';
-                }else if(v1==3){
-                    return '热舞DJ';
-                }else if(v1==4){
-                    return '欧美金曲';
-                }else if(v1==5){
-                    return '少儿歌曲';
-                }else{
-                    return v1;
-                }
-            }
+            field: 'type_name',
+            title: '歌曲类型'
+            // formatter:function(v1){
+            //     if(v1==1){
+            //         return '流行金曲';
+            //     }else if(v1==2){
+            //         return '经典老歌';
+            //     }else if(v1==3){
+            //         return '热舞DJ';
+            //     }else if(v1==4){
+            //         return '欧美金曲';
+            //     }else if(v1==5){
+            //         return '少儿歌曲';
+            //     }else{
+            //         return v1;
+            //     }
+            // }
         },{
             field: 'song_size',
             title: '文件大小'
@@ -99,7 +99,7 @@
             field: 'song_uptime',
             title: '上传时间'
         },{
-            field: 'vip_id',
+            field: 'vip',
             title: 'vip等级'
         },{
             field: 'caozuo',

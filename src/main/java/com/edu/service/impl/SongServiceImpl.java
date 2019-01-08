@@ -1,6 +1,7 @@
 package com.edu.service.impl;
 
 import com.edu.bean.SongBean;
+import com.edu.bean.SongDisplayBean;
 import com.edu.dao.Dao;
 import com.edu.service.SongService;
 
@@ -13,10 +14,10 @@ import java.util.List;
  */
 public class SongServiceImpl implements SongService {
     @Override
-    public List<SongBean> selectAll() {
+    public List<SongDisplayBean> selectAll() {
         Dao dao = new Dao();
-        String sql = "select * from song";
-        List<SongBean> list = (List<SongBean>) dao.query(sql, SongBean.class);
+        String sql = "select song_id,song_name,song_singer,type_name,song_size,song_url,song_format,song_clicks,song_download,song_uptime,vip from song,vip,songtype where song.vip_id = vip.vip_id and song.type_id = songtype.type_id";
+        List<SongDisplayBean> list = (List<SongDisplayBean>) dao.query(sql, SongDisplayBean.class);
         return list;
     }
 
