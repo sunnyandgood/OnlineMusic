@@ -18,4 +18,5 @@ public interface SongService {
     Boolean updateById(SongBean songBean);
     List<VipBean> selectVip();
     List<SongtypeBean> selectSongType();
+    Boolean insert(SongBean songBean);
 }

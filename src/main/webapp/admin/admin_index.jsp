@@ -61,7 +61,7 @@
                             <a class="J_menuItem" href="${ctx}/admin/admin_song.jsp" data-index="0">音乐管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminUserAnswer" data-index="0">下载管理</a>
+                            <a class="J_menuItem" href="${ctx}/admin/admin_download.jsp" data-index="0">下载管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="${ctx}/page/adminUserScore" data-index="0">点击管理</a>

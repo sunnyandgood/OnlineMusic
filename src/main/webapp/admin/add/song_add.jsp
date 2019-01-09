@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: sunny
@@ -37,75 +38,46 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">歌曲类型</label>
                             <div class="col-sm-10">
-                                <label class="radio-inline">
-                                    <input type="radio" value="1"  name="type_id">
-                                    很简单
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" value="2"  name="type_id">
-                                    简单
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" value="3"  name="type_id">
-                                    适中
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" value="4"  name="type_id">
-                                    难
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" value="5"  name="type_id">
-                                    很难
-                                </label>
+                                <c:forEach var="songtypeBean" items="${songtypeBeanList }">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="type_id" value="<c:out value="${songtypeBean.type_id }" />"/>
+                                        <c:out value="${songtypeBean.type_name }" />
+                                    </label>
+                                </c:forEach>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">文件大小</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="song_size" value="<c:out value="${selectById.song_size}"/>">
+                                <input type="text" class="form-control"  name="song_size">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">文件地址</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="song_url" value="<c:out value="${selectById.song_url}"/>">
+                                <input type="text" class="form-control"  name="song_url">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">文件格式</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="song_format" value="<c:out value="${selectById.song_format}"/>">
+                                <input type="text" class="form-control"  name="song_format">
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">点击次数</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="song_clicks" value="<c:out value="${selectById.song_clicks}"/>">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">下载次数</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="song_download" value="<c:out value="${selectById.song_download}"/>">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">上传时间</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="song_uptime" value="<c:out value="${selectById.song_uptime}"/>">
-                            </div>
-                        </div>
-
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">vip等级</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="vip_id" value="<c:out value="${selectById.vip_id}"/>">
+                                <c:forEach var="vipBean" items="${vipBeanList }">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="vip_id" value="<c:out value="${vipBean.vip_id }" />"/>
+                                        <c:out value="${vipBean.vip }" />
+                                    </label>
+                                </c:forEach>
                             </div>
                         </div>
 
@@ -129,21 +101,21 @@
 
     function insert(){
 
-        alert($('[name=adminName]').val());
-        alert($('[name=adminPassword]').val());
+        // alert($('[name=song_name]').val());
+        // alert($('[name=song_singer]').val());
 
-        if($('[name=adminName]').val()=='') {
-            layer.msg("用户名不能为空");
-        }else if($('[name=adminPassword]').val()==''){
-            layer.msg("密码不能为空");
+        if($('[name=song_name]').val()=='') {
+            layer.msg("歌名不能为空");
+        }else if($('[name=song_singer]').val()==''){
+            layer.msg("歌手不能为空");
         }else {
-            $.post('${ctx}/admin/insert',$('form').serialize(),function (r) {
-                if(r.code==200){
+            $.post('${ctx}/SongServlet?state=addSong',$('form').serialize(),function (r) {
+                // if(r.code==200){
                     parent.$('#table').bootstrapTable('refresh');
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index); //再执行关闭
-                }
-                layer.msg(r.message);
+                // }
+                // layer.msg(r.message);
             });
         }
     }

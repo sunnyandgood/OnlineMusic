@@ -6,15 +6,19 @@ import com.edu.bean.SongtypeBean;
 import com.edu.bean.VipBean;
 import com.edu.service.SongService;
 import com.edu.service.impl.SongServiceImpl;
+import com.edu.util.ExcelUtil;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +31,7 @@ import java.util.List;
 public class SongServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private SongService songService = new SongServiceImpl();
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -51,7 +56,77 @@ public class SongServlet extends HttpServlet {
             this.deleteByIds(request,response);
         }else if ("selectVipAndSongType".equals(state)){
             this.selectVipAndSongType(request,response);
+        }else if ("addSong".equals(state)){
+            this.addSong(request,response);
+        }else if ("addToExcel".equals(state)){
+            try {
+                this.addToExcel(request,response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void addToExcel(ServletRequest request, ServletResponse response) throws Exception {
+        //获取数据
+        List<SongDisplayBean> list = songService.selectAll();
+
+        //excel标题
+        String[] title = {"歌曲id","歌曲名字","歌手","歌曲类型","文件大小","文件地址","歌曲格式",
+                "点击次数","下载次数","上传时间","vip等级"};
+
+        //sheet文件名
+        String sheetName = "歌曲";
+
+        //将数据库中数据存到String数组中
+        String[][] values = new String[list.size()][11];
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for(int i=0;i<list.size();i++) {
+            values[i][0] = list.get(i).getSong_id().toString();
+            values[i][1] = list.get(i).getSong_name();
+            values[i][2] = list.get(i).getSong_singer();
+            values[i][3] = list.get(i).getType_name();
+            values[i][4] = list.get(i).getSong_size();
+            values[i][5] = list.get(i).getSong_url();
+            values[i][6] = list.get(i).getSong_format();
+            values[i][7] = list.get(i).getSong_clicks().toString();
+            values[i][8] = list.get(i).getSong_download().toString();
+            values[i][9] = simpleDateFormat.format(list.get(i).getSong_uptime());
+            values[i][10] = list.get(i).getVip();
+
+//            System.out.println(list.get(i));
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream("D:/歌曲.xls");
+        HSSFWorkbook workbook = ExcelUtil.getHSSFWorkbook(sheetName, title, values);
+        workbook.write(fileOutputStream);
+        fileOutputStream.close();
+    }
+
+    private void addSong(ServletRequest request, ServletResponse response) {
+        String song_name = request.getParameter("song_name");
+        String song_singer = request.getParameter("song_singer");
+        Integer type_id = Integer.parseInt(request.getParameter("type_id"));
+        String song_size = request.getParameter("song_size");
+        String song_url = request.getParameter("song_url");
+        String song_format = request.getParameter("song_format");
+        Integer vip_id = Integer.parseInt(request.getParameter("vip_id"));
+
+        SongBean songBean = new SongBean();
+        songBean.setSong_name(song_name);
+        songBean.setSong_singer(song_singer);
+        songBean.setType_id(type_id);
+        songBean.setSong_size(song_size);
+        songBean.setSong_url(song_url);
+        songBean.setSong_format(song_format);
+        songBean.setSong_clicks(0);
+        songBean.setSong_download(0);
+        songBean.setSong_uptime(new Date());
+        songBean.setVip_id(vip_id);
+
+        Boolean flag = songService.insert(songBean);
+
+//        request.getRequestDispatcher("./SongServlet?state=selectVipAndSongType").forward(request,response);
+
     }
 
     private void selectVipAndSongType(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -59,8 +134,8 @@ public class SongServlet extends HttpServlet {
         List<VipBean> vipBeanList = songService.selectVip();
         List<SongtypeBean> songtypeBeanList = songService.selectSongType();
 
-        System.out.println(vipBeanList);
-        System.out.println(songtypeBeanList);
+//        System.out.println(vipBeanList);
+//        System.out.println(songtypeBeanList);
 
         request.setAttribute("vipBeanList",vipBeanList);
         request.setAttribute("songtypeBeanList",songtypeBeanList);
@@ -77,8 +152,6 @@ public class SongServlet extends HttpServlet {
     }
 
     private void updateById(ServletRequest request, ServletResponse response) throws ParseException, ServletException, IOException {
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         Integer song_id = Integer.parseInt(request.getParameter("song_id"));
         String song_name = request.getParameter("song_name");
         String song_singer = request.getParameter("song_singer");

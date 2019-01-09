@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: sunny
-  Date: 2019/1/7
-  Time: 17:25
+  Date: 2019/1/9
+  Time: 16:53
   To change this template use File | Settings | File Templates.
 --%>
 <%@page pageEncoding="utf-8"%>
@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>音乐管理</title>
+    <title>下载管理</title>
     <jsp:include page="/resources/layout/_css.jsp"/>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="${ctx}/resources/css/bootstrap-table/bootstrap-table.min.css"/>
@@ -27,7 +27,6 @@
 
                 </table>
                 <div class="btn btn-primary" onclick="removeAll()">批量删除</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div class="btn btn-primary" onclick="add()">添加</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="btn btn-primary" onclick="addToExcel()">导出到Excel</div>
 
             </div>
@@ -129,7 +128,7 @@
                 $.post('${ctx}/SongServlet?state=deleteById&songId=' + row['song_id'],function(r){
 
                     // if(r.code==200){
-                        $('#table').bootstrapTable('refresh');
+                    $('#table').bootstrapTable('refresh');
                     // }
 
                     // alert(document.getElementById('deleteByIdFlag').value);
@@ -150,19 +149,11 @@
 
             $.post('${ctx}/SongServlet?state=deleteByIds&songIds=' + ids,function (r) {
                 // if(r.code==200){
-                    $('#table').bootstrapTable('refresh');
+                $('#table').bootstrapTable('refresh');
                 // }
                 // layer.msg(r.message);
             });
         }
-    }
-
-    function add(){
-        layer.open({
-            type: 2,
-            area: ['800px', '500px'],
-            content: '${ctx}/SongServlet?state=selectVipAndSongType' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-        });
     }
 
     function addToExcel() {
@@ -173,3 +164,4 @@
     }
 </script>
 </html>
+

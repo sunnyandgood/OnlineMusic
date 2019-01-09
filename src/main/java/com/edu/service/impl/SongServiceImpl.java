@@ -70,4 +70,19 @@ public class SongServiceImpl implements SongService {
         List<SongtypeBean> list = (List<SongtypeBean>) dao.query(sql, SongtypeBean.class);
         return list;
     }
+
+    @Override
+    public Boolean insert(SongBean songBean) {
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Dao dao = new Dao();
+        String sql = "insert into song (song_name,song_singer,type_id,song_size,song_url,song_format," +
+                "song_clicks,song_download,song_uptime,vip_id) " +
+                "values ('"+songBean.getSong_name()+"','"+songBean.getSong_singer()+"','"+songBean.getType_id()+"'," +
+                "'"+songBean.getSong_size()+"','"+songBean.getSong_url()+"','"+songBean.getSong_format()+"'," +
+                "'"+songBean.getSong_clicks()+"','"+songBean.getSong_download()+"'," +
+                "'"+simpleDateFormat.format(songBean.getSong_uptime())+"','"+songBean.getVip_id()+"')";
+
+        Boolean flag = dao.addObj(sql);
+        return flag;
+    }
 }
