@@ -73,7 +73,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Boolean insert(SongBean songBean) {
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Dao dao = new Dao();
         String sql = "insert into song (song_name,song_singer,type_id,song_size,song_url,song_format," +
                 "song_clicks,song_download,song_uptime,vip_id) " +

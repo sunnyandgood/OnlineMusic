@@ -30,5 +30,22 @@
         <url-pattern>/DownloadServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ClicksServlet</servlet-name>
+        <servlet-class>com.edu.servlet.ClicksServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClicksServlet</servlet-name>
+        <url-pattern>/ClicksServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ManagerServlet</servlet-name>
+        <servlet-class>com.edu.servlet.ManagerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ManagerServlet</servlet-name>
+        <url-pattern>/ManagerServlet</url-pattern>
+    </servlet-mapping>
 
 </web-app>

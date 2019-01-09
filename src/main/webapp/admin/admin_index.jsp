@@ -64,10 +64,10 @@
                             <a class="J_menuItem" href="${ctx}/admin/admin_download.jsp" data-index="0">下载管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminUserScore" data-index="0">点击管理</a>
+                            <a class="J_menuItem" href="${ctx}/admin/admin_clicks.jsp" data-index="0">点击管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminUser" data-index="0">管理员管理</a>
+                            <a class="J_menuItem" href="${ctx}/admin/admin_manager.jsp" data-index="0">管理员管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="${ctx}/page/adminAdmin" data-index="0">歌曲类型管理</a>
