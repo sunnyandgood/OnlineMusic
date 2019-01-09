@@ -20,7 +20,7 @@
     <div class="row">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                音乐展示
+                下载数据展示
             </div>
             <div class="ibox-content">
                 <table id="table">
@@ -41,7 +41,7 @@
     //初始化表格,动态从服务器加载数据
     $('#table').bootstrapTable({
         //获取数据的Servlet地址
-        url:'${ctx}/SongServlet?state=listAll',
+        url:'${ctx}/DownloadServlet?state=listAll',
         columns: [{
             checkbox:true
         }, {
@@ -53,46 +53,22 @@
                 return pageSize * (pageNumber - 1) + index + 1;    //返回每条的序号： 每页条数 * （当前页 - 1 ）+ 序号
             }
         }, {
-            field: 'song_id',
+            field: 'download_id',
             title: 'id'
+        }, {
+            field: 'user_name',
+            title: '用户名'
         }, {
             field: 'song_name',
             title: '歌曲名字'
         }, {
-            field: 'song_singer',
-            title: '歌手'
-        }, {
-            field: 'type_name',
-            title: '歌曲类型'
-        },{
-            field: 'song_size',
-            title: '文件大小'
-        },{
-            field: 'song_url',
-            title: '文件地址'
-        },{
-            field: 'song_format',
-            title: '歌曲格式'
-        },{
-            field: 'song_clicks',
-            title: '点击次数'
-        },{
-            field: 'song_download',
-            title: '下载次数'
-        },{
-            field: 'song_uptime',
-            title: '上传时间'
-        },{
-            field: 'vip',
-            title: 'vip等级'
+            field: 'download_date',
+            title: '下载时间'
         },{
             field: 'caozuo',
             title: '操作',
             formatter:function(v1,v2,v3){
-                return ['<a class="update" href="javascript:void(0)" title="Update">',
-                    '<i class="fa fa-pencil"></i>',
-                    '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
-                    '<a class="remove" href="javascript:void(0)" title="Remove">',
+                return ['&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">',
                     '<i class="glyphicon glyphicon-remove"></i>',
                     '</a>'].join('');
             },
@@ -116,23 +92,11 @@
         }
     });
     window.caocuoEvents = {
-        'click .update': function (e, value, row) {
-            layer.open({
-                type: 2,
-                area: ['800px', '500px'],
-                content: '${ctx}/SongServlet?state=selectById&songId=' + row['song_id'] //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-            });
-        },
         'click .remove': function (e, value, row) {
             if(confirm('是否删除')){
-                $.post('${ctx}/SongServlet?state=deleteById&songId=' + row['song_id'],function(r){
+                $.post('${ctx}/DownloadServlet?state=deleteById&downloadId=' + row['download_id'],function(r){
 
-                    // if(r.code==200){
                     $('#table').bootstrapTable('refresh');
-                    // }
-
-                    // alert(document.getElementById('deleteByIdFlag').value);
-                    // layer.msg()
                 });
             }
         }
@@ -143,22 +107,18 @@
             arr = $('#table').bootstrapTable('getSelections');
             str = "";
             for(i in arr){
-                str += arr[i]['song_id'] + ",";
+                str += arr[i]['download_id'] + ",";
             }
             ids = str.substring(0,str.length-1);
 
-            $.post('${ctx}/SongServlet?state=deleteByIds&songIds=' + ids,function (r) {
-                // if(r.code==200){
+            $.post('${ctx}/DownloadServlet?state=deleteByIds&downloadIds=' + ids,function (r) {
                 $('#table').bootstrapTable('refresh');
-                // }
-                // layer.msg(r.message);
             });
         }
     }
 
     function addToExcel() {
-        $.post('${ctx}/SongServlet?state=addToExcel',function (r) {
-            // layer.msg(r.message);
+        $.post('${ctx}/DownloadServlet?state=addToExcel',function (r) {
             layer.msg("导出成功！");
         });
     }

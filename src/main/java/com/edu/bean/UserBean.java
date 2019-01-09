@@ -16,5 +16,5 @@ public class UserBean {
     private Integer vip_id;
     private Date user_birthday;
     private String user_gender;
-    private Integer user_like;
+    private Integer type_id;
 }
