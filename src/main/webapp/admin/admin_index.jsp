@@ -61,16 +61,22 @@
                             <a class="J_menuItem" href="${ctx}/admin/admin_song.jsp" data-index="0">音乐管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminUserAnswer" data-index="0">用户答卷</a>
+                            <a class="J_menuItem" href="${ctx}/page/adminUserAnswer" data-index="0">下载管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminUserScore" data-index="0">用户成绩</a>
+                            <a class="J_menuItem" href="${ctx}/page/adminUserScore" data-index="0">点击管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminUser" data-index="0">用户管理</a>
+                            <a class="J_menuItem" href="${ctx}/page/adminUser" data-index="0">管理员管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminAdmin" data-index="0">管理员</a>
+                            <a class="J_menuItem" href="${ctx}/page/adminAdmin" data-index="0">歌曲类型管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="${ctx}/page/adminAdmin" data-index="0">用户管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="${ctx}/page/adminAdmin" data-index="0">vip等级管理</a>
                         </li>
                     </ul>
                 </li>

@@ -2,6 +2,8 @@ package com.edu.servlet;
 
 import com.edu.bean.SongBean;
 import com.edu.bean.SongDisplayBean;
+import com.edu.bean.SongtypeBean;
+import com.edu.bean.VipBean;
 import com.edu.service.SongService;
 import com.edu.service.impl.SongServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -45,7 +47,33 @@ public class SongServlet extends HttpServlet {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }else if ("deleteByIds".equals(state)){
+            this.deleteByIds(request,response);
+        }else if ("selectVipAndSongType".equals(state)){
+            this.selectVipAndSongType(request,response);
         }
+    }
+
+    private void selectVipAndSongType(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        List<VipBean> vipBeanList = songService.selectVip();
+        List<SongtypeBean> songtypeBeanList = songService.selectSongType();
+
+        System.out.println(vipBeanList);
+        System.out.println(songtypeBeanList);
+
+        request.setAttribute("vipBeanList",vipBeanList);
+        request.setAttribute("songtypeBeanList",songtypeBeanList);
+        request.getRequestDispatcher("./admin/add/song_add.jsp").forward(request, response);
+    }
+
+    private void deleteByIds(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        String songIds = request.getParameter("songIds");
+        String[] ids = songIds.split(",");
+        for (String id : ids){
+            songService.deleteById(Integer.parseInt(id));
+        }
+        request.getRequestDispatcher("./admin/admin_song.jsp").forward(request, response);
     }
 
     private void updateById(ServletRequest request, ServletResponse response) throws ParseException, ServletException, IOException {
@@ -92,12 +120,6 @@ public class SongServlet extends HttpServlet {
     }
 
     private void deleteById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-        PrintWriter printWriter = null;
-        try {
-            printWriter = response.getWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Integer songId = Integer.parseInt(request.getParameter("songId"));
         Boolean flag = songService.deleteById(songId);
 

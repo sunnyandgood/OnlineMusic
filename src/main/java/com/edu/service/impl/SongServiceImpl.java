@@ -2,6 +2,8 @@ package com.edu.service.impl;
 
 import com.edu.bean.SongBean;
 import com.edu.bean.SongDisplayBean;
+import com.edu.bean.SongtypeBean;
+import com.edu.bean.VipBean;
 import com.edu.dao.Dao;
 import com.edu.service.SongService;
 
@@ -16,7 +18,9 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<SongDisplayBean> selectAll() {
         Dao dao = new Dao();
-        String sql = "select song_id,song_name,song_singer,type_name,song_size,song_url,song_format,song_clicks,song_download,song_uptime,vip from song,vip,songtype where song.vip_id = vip.vip_id and song.type_id = songtype.type_id";
+        String sql = "select song_id,song_name,song_singer,type_name,song_size,song_url,song_format," +
+                "song_clicks,song_download,song_uptime,vip from song,vip,songtype " +
+                "where song.vip_id = vip.vip_id and song.type_id = songtype.type_id";
         List<SongDisplayBean> list = (List<SongDisplayBean>) dao.query(sql, SongDisplayBean.class);
         return list;
     }
@@ -49,5 +53,21 @@ public class SongServiceImpl implements SongService {
                 "where song_id = '"+songBean.getSong_id()+"'";
         Boolean flag = dao.addObj(sql);
         return flag;
+    }
+
+    @Override
+    public List<VipBean> selectVip() {
+        Dao dao = new Dao();
+        String sql = "select * from vip";
+        List<VipBean> list = (List<VipBean>) dao.query(sql, VipBean.class);
+        return list;
+    }
+
+    @Override
+    public List<SongtypeBean> selectSongType() {
+        Dao dao = new Dao();
+        String sql = "select * from songtype";
+        List<SongtypeBean> list = (List<SongtypeBean>) dao.query(sql, SongtypeBean.class);
+        return list;
     }
 }

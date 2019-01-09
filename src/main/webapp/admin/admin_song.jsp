@@ -29,7 +29,7 @@
                 <div class="btn btn-primary" onclick="removeAll()">批量删除</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="btn btn-primary" onclick="add()">添加</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="btn btn-primary" onclick="addToExcel()">导出到Excel</div>
-                <input type="hidden" id="deleteByIdFlag" value="${deleteByIdFlag }" />
+
             </div>
         </div>
     </div>
@@ -65,21 +65,6 @@
         }, {
             field: 'type_name',
             title: '歌曲类型'
-            // formatter:function(v1){
-            //     if(v1==1){
-            //         return '流行金曲';
-            //     }else if(v1==2){
-            //         return '经典老歌';
-            //     }else if(v1==3){
-            //         return '热舞DJ';
-            //     }else if(v1==4){
-            //         return '欧美金曲';
-            //     }else if(v1==5){
-            //         return '少儿歌曲';
-            //     }else{
-            //         return v1;
-            //     }
-            // }
         },{
             field: 'song_size',
             title: '文件大小'
@@ -147,7 +132,7 @@
                         $('#table').bootstrapTable('refresh');
                     // }
 
-                    alert(document.getElementById('deleteByIdFlag').value);
+                    // alert(document.getElementById('deleteByIdFlag').value);
                     // layer.msg()
                 });
             }
@@ -159,15 +144,15 @@
             arr = $('#table').bootstrapTable('getSelections');
             str = "";
             for(i in arr){
-                str += arr[i]['questionId'] + ",";
+                str += arr[i]['song_id'] + ",";
             }
             ids = str.substring(0,str.length-1);
 
-            $.post('${ctx}/question/removeAll',{'ids':ids},function (r) {
-                if(r.code==200){
+            $.post('${ctx}/SongServlet?state=deleteByIds&songIds=' + ids,function (r) {
+                // if(r.code==200){
                     $('#table').bootstrapTable('refresh');
-                }
-                layer.msg(r.message);
+                // }
+                // layer.msg(r.message);
             });
         }
     }
@@ -176,7 +161,7 @@
         layer.open({
             type: 2,
             area: ['800px', '500px'],
-            content: '${ctx}/page/questionAdd/' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+            content: '${ctx}/SongServlet?state=selectVipAndSongType' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
         });
     }
 
