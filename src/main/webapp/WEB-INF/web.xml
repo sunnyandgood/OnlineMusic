@@ -10,8 +10,6 @@
         <welcome-file>default.jsp</welcome-file>
     </welcome-file-list>
 
-
-
     <servlet>
         <servlet-name>SongServlet</servlet-name>
         <servlet-class>com.edu.servlet.SongServlet</servlet-class>
@@ -47,5 +45,15 @@
         <servlet-name>ManagerServlet</servlet-name>
         <url-pattern>/ManagerServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SongTypeServlet</servlet-name>
+        <servlet-class>com.edu.servlet.SongTypeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SongTypeServlet</servlet-name>
+        <url-pattern>/SongTypeServlet</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

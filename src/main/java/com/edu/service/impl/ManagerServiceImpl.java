@@ -11,7 +11,7 @@ import java.util.List;
  * @Date: 2019/1/9 19:18
  */
 public class ManagerServiceImpl implements ManagerService {
-    Dao dao = new Dao();
+    private Dao dao = new Dao();
 
     @Override
     public List<ManagerBean> listAll() {

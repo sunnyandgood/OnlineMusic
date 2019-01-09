@@ -68,6 +68,8 @@ public class ManagerServlet extends HttpServlet {
         managerBean.setManager_password(manager_password);
 
         managerService.update(managerBean);
+
+        request.getRequestDispatcher("./ManagerServlet?state=selectById&managerId=" + manager_id).forward(request,response);
     }
 
     private void selectById(ServletRequest request, ServletResponse response) throws IOException, ServletException {
