@@ -73,5 +73,14 @@
         <url-pattern>/UserServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>UtilServlet</servlet-name>
+        <servlet-class>com.edu.servlet.UtilServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UtilServlet</servlet-name>
+        <url-pattern>/UtilServlet</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

@@ -23,7 +23,7 @@
 <script src="${ctx}/resources/js/Huploadify/jquery.Huploadify.js"></script>
 <script src="${ctx}/resources/js/my.js"></script>
 <script>
-    upload($('#userUpload'),false,'${ctx}/UserServlet?state=upload','${ctx}');
+    upload($('#userUpload'),false,'${ctx}/UtilServlet?state=upload','${ctx}');
 
     function add() {
         $.post('${ctx}/UserServlet?state=addFromExcel',$('form').serialize(),function (r) {

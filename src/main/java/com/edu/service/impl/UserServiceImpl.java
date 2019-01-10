@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
                 "user_password = '"+userBean.getUser_password()+"' , vip_id = '"+userBean.getVip_id()+"' ," +
                 "user_birthday = '"+simpleDateFormat.format(userBean.getUser_birthday())+"' , " +
                 "user_gender = '"+userBean.getUser_gender()+"' , type_id = '"+userBean.getType_id()+"' " +
-                "where uer_id = '"+userBean.getUser_id()+"'";
+                "where user_id = '"+userBean.getUser_id()+"'";
         Boolean flag = dao.addObj(sql);
         return flag;
     }

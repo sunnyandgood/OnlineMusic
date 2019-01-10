@@ -37,10 +37,17 @@
                                 </div>
                             </div>
 
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group">
+                                <input type="hidden" class="form-control"  name="typeIdOld" value="<c:out value="${userBean.type_id}"/>">
                                 <label class="col-sm-2 control-label">歌曲类型</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control"  name="type_id" value="<c:out value="${selectById.type_id}"/>">
+                                    <c:forEach var="songtypeBean" items="${songtypeBeanList }">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="type_id" value="<c:out value="${songtypeBean.type_id }" />"/>
+                                            <c:out value="${songtypeBean.type_name }" />
+                                        </label>
+                                    </c:forEach>
                                 </div>
                             </div>
 
@@ -86,10 +93,17 @@
                                 </div>
                             </div>
 
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group">
+                                <input type="hidden" class="form-control"  name="vipIdOld" value="<c:out value="${userBean.vip_id}"/>">
                                 <label class="col-sm-2 control-label">vip等级</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control"  name="vip_id" value="<c:out value="${selectById.vip_id}"/>">
+                                    <c:forEach var="vipBean" items="${vipBeanList }">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="vip_id" value="<c:out value="${vipBean.vip_id }" />"/>
+                                            <c:out value="${vipBean.vip }" />
+                                        </label>
+                                    </c:forEach>
                                 </div>
                             </div>
 

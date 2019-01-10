@@ -5,7 +5,9 @@ import com.edu.bean.SongDisplayBean;
 import com.edu.bean.SongtypeBean;
 import com.edu.bean.VipBean;
 import com.edu.service.SongService;
+import com.edu.service.UtilService;
 import com.edu.service.impl.SongServiceImpl;
+import com.edu.service.impl.UtilServiceImpl;
 import com.edu.util.ExcelUtil;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
@@ -130,12 +132,10 @@ public class SongServlet extends HttpServlet {
     }
 
     private void selectVipAndSongType(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        UtilService utilService = new UtilServiceImpl();
         response.setCharacterEncoding("utf-8");
-        List<VipBean> vipBeanList = songService.selectVip();
-        List<SongtypeBean> songtypeBeanList = songService.selectSongType();
-
-//        System.out.println(vipBeanList);
-//        System.out.println(songtypeBeanList);
+        List<VipBean> vipBeanList = utilService.selectVip();
+        List<SongtypeBean> songtypeBeanList = utilService.selectSongType();
 
         request.setAttribute("vipBeanList",vipBeanList);
         request.setAttribute("songtypeBeanList",songtypeBeanList);
@@ -179,16 +179,23 @@ public class SongServlet extends HttpServlet {
         songBean.setVip_id(vip_id);
 
         Boolean flag = songService.updateById(songBean);
-        request.setAttribute("updateByIdFlag",flag);
-        request.getRequestDispatcher("./SongServlet?state=selectById&songId=" + song_id).forward(request,response);
+//        request.setAttribute("updateByIdFlag",flag);
+//        request.getRequestDispatcher("./SongServlet?state=selectById&songId=" + song_id).forward(request,response);
     }
 
     private void selectById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        UtilService utilService = new UtilServiceImpl();
         response.setCharacterEncoding("utf-8");
         Integer songId = Integer.parseInt(request.getParameter("songId"));
         List<SongBean> list = songService.selectById(songId);
 
+        List<VipBean> vipBeanList = utilService.selectVip();
+        List<SongtypeBean> songtypeBeanList = utilService.selectSongType();
+
         request.setAttribute("selectById",list);
+        request.setAttribute("vipBeanList",vipBeanList);
+        request.setAttribute("songtypeBeanList",songtypeBeanList);
+
         request.getRequestDispatcher("./admin/update/song_update.jsp").forward(request, response);
     }
 
