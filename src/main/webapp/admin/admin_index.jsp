@@ -73,7 +73,7 @@
                             <a class="J_menuItem" href="${ctx}/admin/admin_songtype.jsp" data-index="0">歌曲类型管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${ctx}/page/adminAdmin" data-index="0">用户管理</a>
+                            <a class="J_menuItem" href="${ctx}/admin/admin_user.jsp" data-index="0">用户管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="${ctx}/admin/admin_vip.jsp" data-index="0">vip等级管理</a>
