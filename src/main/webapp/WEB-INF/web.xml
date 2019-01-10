@@ -55,5 +55,14 @@
         <url-pattern>/SongTypeServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>VipServlet</servlet-name>
+        <servlet-class>com.edu.servlet.VipServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VipServlet</servlet-name>
+        <url-pattern>/VipServlet</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServlet;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -26,7 +24,6 @@ import java.util.List;
 public class SongTypeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private SongTypeService songTypeService = new SongTypeServiceImpl();
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -110,7 +107,6 @@ public class SongTypeServlet extends HttpServlet {
 
         //将数据库中数据存到String数组中
         String[][] values = new String[list.size()][2];
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for(int i=0;i<list.size();i++) {
             values[i][0] = list.get(i).getType_id().toString();
             values[i][1] = list.get(i).getType_name();
