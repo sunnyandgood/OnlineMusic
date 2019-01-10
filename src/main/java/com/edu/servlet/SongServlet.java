@@ -105,11 +105,17 @@ public class SongServlet extends HttpServlet {
     }
 
     private void addSong(ServletRequest request, ServletResponse response) {
+        //得到上传路径的硬盘路径
+        String dir = request.getServletContext().getRealPath("/resources/upload");
+        String songPath = request.getParameter("songPath");
+
+        String path = dir + songPath;
+
         String song_name = request.getParameter("song_name");
         String song_singer = request.getParameter("song_singer");
         Integer type_id = Integer.parseInt(request.getParameter("type_id"));
         String song_size = request.getParameter("song_size");
-        String song_url = request.getParameter("song_url");
+//        String song_url = request.getParameter("song_url");
         String song_format = request.getParameter("song_format");
         Integer vip_id = Integer.parseInt(request.getParameter("vip_id"));
 
@@ -118,7 +124,7 @@ public class SongServlet extends HttpServlet {
         songBean.setSong_singer(song_singer);
         songBean.setType_id(type_id);
         songBean.setSong_size(song_size);
-        songBean.setSong_url(song_url);
+        songBean.setSong_url(path);
         songBean.setSong_format(song_format);
         songBean.setSong_clicks(0);
         songBean.setSong_download(0);

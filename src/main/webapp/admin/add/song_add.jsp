@@ -54,12 +54,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">文件地址</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="song_url">
-                            </div>
-                        </div>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-sm-2 control-label">文件地址</label>--%>
+                            <%--<div class="col-sm-10">--%>
+                                <%--<input type="text" class="form-control"  name="song_url">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">文件格式</label>
@@ -81,6 +81,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">文件地址</label>
+                            <div class="col-sm-10">
+                                <div id="songUpload" name="songPath"></div>
+                            </div>
+                        </div>
+
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
@@ -97,7 +104,11 @@
 <jsp:include page="/resources/layout/_script.jsp"/>
 <script src="${ctx}/resources/js/datapicker/bootstrap-datepicker.js"></script>
 <script src="${ctx}/resources/js/datapicker/bootstrap-datepicker.zh-CN.min.js"></script>
+<script src="${ctx}/resources/js/Huploadify/jquery.Huploadify.js"></script>
+<script src="${ctx}/resources/js/my.js"></script>
 <script>
+
+    upload($('#songUpload'),false,'${ctx}/UtilServlet?state=upload','${ctx}');
 
     function insert(){
 
