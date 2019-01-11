@@ -1,6 +1,7 @@
 package com.edu.servlet;
 
 import com.edu.bean.ManagerBean;
+import com.edu.bean.UserBean;
 import com.edu.service.ManagerService;
 import com.edu.service.UserService;
 import com.edu.service.impl.ManagerServiceImpl;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -22,7 +22,6 @@ public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ManagerService managerService = new ManagerServiceImpl();
     private UserService userService = new UserServiceImpl();
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,8 +30,33 @@ public class LoginServlet extends HttpServlet {
 
         System.out.println(state);
 
-        if ("adminLogin".equals(state)) {
+        if ("userLogin".equals(state)) {
+            this.userLogin(request,response);
+        }else if ("adminLogin".equals(state)){
             this.adminLogin(request,response);
+        }
+    }
+
+    private void userLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+
+        String userName = request.getParameter("userName");
+        String userPassword = request.getParameter("userPassword");
+
+        List<UserBean> list = userService.listAll();
+        Boolean flag = false;
+        for (UserBean userBean : list){
+            if (userName.equals(userBean.getUser_name()) &&
+                    userPassword.equals(userBean.getUser_password())){
+                flag = true;
+                break;
+            }
+        }
+
+        if (flag){
+            request.getRequestDispatcher("./user/user_index.jsp").forward(request,response);
+        }else {
+            request.getRequestDispatcher("./user/user_login.jsp").forward(request,response);
         }
     }
 

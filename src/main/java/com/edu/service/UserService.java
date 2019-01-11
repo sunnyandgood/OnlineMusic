@@ -15,4 +15,5 @@ public interface UserService {
     List<UserBean> selectById(int user_id);
     Boolean updateById(UserBean userBean);
     Boolean insert(UserBean userBean);
+    List<UserBean> listAll();
 }

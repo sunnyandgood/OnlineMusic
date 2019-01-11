@@ -62,16 +62,16 @@ public class UserServlet extends HttpServlet {
             }
         }else if ("selectVipAndSongType".equals(state)){
             this.selectVipAndSongType(request,response);
-        }else if ("addSong".equals(state)){
+        }else if ("addUser".equals(state)){
             try {
-                this.addSong(request,response);
+                this.addUser(request,response);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void addSong(HttpServletRequest request, HttpServletResponse response) throws ParseException {
+    private void addUser(HttpServletRequest request, HttpServletResponse response) throws ParseException {
         String user_name = request.getParameter("user_name");
         String user_password = request.getParameter("user_password");
         Integer vip_id = Integer.parseInt(request.getParameter("vip_id"));

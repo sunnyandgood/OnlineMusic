@@ -59,4 +59,11 @@ public class UserServiceImpl implements UserService {
         Boolean flag = dao.addObj(sql);
         return flag;
     }
+
+    @Override
+    public List<UserBean> listAll() {
+        String sql = "select user_name,user_password from user";
+        List<UserBean> list = (List<UserBean>) dao.query(sql, UserBean.class);
+        return list;
+    }
 }

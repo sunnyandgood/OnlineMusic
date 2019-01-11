@@ -71,7 +71,7 @@
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">歌曲类型</label>
+                            <label class="col-sm-2 control-label">喜欢的歌曲类型</label>
                             <div class="col-sm-10">
                                 <c:forEach var="songtypeBean" items="${songtypeBeanList }">
                                     <label class="radio-inline">
@@ -123,7 +123,7 @@
         }else if($('[name=type_id]').val()==''){
             layer.msg("喜欢的歌曲类型不能为空");
         }else {
-            $.post('${ctx}/UserServlet?state=addSong',$('form').serialize(),function (r) {
+            $.post('${ctx}/UserServlet?state=addUser',$('form').serialize(),function (r) {
                 parent.$('#table').bootstrapTable('refresh');
                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                 parent.layer.close(index); //再执行关闭
