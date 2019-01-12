@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: sunny
@@ -54,31 +55,18 @@
                 <li>
                     <a href="#">
                         <i class="fa fa-home"></i>
-                        <span class="nav-label">数据管理</span>
+                        <span class="nav-label">音乐库</span>
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="${ctx}/admin/admin_song.jsp" data-index="0">音乐管理</a>
+                            <a href="${ctx}/UserUtilServlet?state=querySongType">音乐类别</a>
                         </li>
-                        <li>
-                            <a class="J_menuItem" href="${ctx}/admin/admin_download.jsp" data-index="0">下载管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${ctx}/admin/admin_clicks.jsp" data-index="0">点击管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${ctx}/admin/admin_manager.jsp" data-index="0">管理员管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${ctx}/admin/admin_songtype.jsp" data-index="0">歌曲类型管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${ctx}/admin/admin_user.jsp" data-index="0">用户管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${ctx}/admin/admin_vip.jsp" data-index="0">vip等级管理</a>
-                        </li>
+                        <c:forEach var="songtypeBean" items="${songtypeBeanList }">
+                            <li>
+                                <a class="J_menuItem" href="${ctx}/UserUtilServlet?state=querySongByTypeId&typeId=<c:out value="${songtypeBean.type_id }" />"   data-index="0"><c:out value="${songtypeBean.type_name }" /></a>
+                            </li>
+                        </c:forEach>
                     </ul>
                 </li>
             </ul>
@@ -92,13 +80,10 @@
                 <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                 </div>
 
-                <a class="J_menuItem" href="${ctx}/admin/admin_user.jsp" data-index="0">用户管理</a>
-
-
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="dropdown hidden-xs">
                         <a class="right-sidebar-toggle" aria-expanded="false">
-                            <i class="fa fa-tasks"></i> 排行榜
+                            <i class="fa fa-tasks"></i> 主题&排行榜
                         </a>
                     </li>
                 </ul>
@@ -110,7 +95,7 @@
 
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="${ctx}/admin/admin_song.jsp">首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id="${ctx}/UserUtilServlet?state=querySongs">首页</a>
                 </div>
             </nav>
 
@@ -134,7 +119,7 @@
             <a href="${ctx}/UserUtilServlet?state=signOut" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${ctx}/admin/admin_song.jsp" frameborder="0" data-id="${ctx}/admin/admin_song.jsp" seamless>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${ctx}/UserUtilServlet?state=querySongs" frameborder="0" data-id="${ctx}/UserUtilServlet?state=querySongs" seamless>
 
             </iframe>
         </div>

@@ -2,14 +2,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: sunny
-  Date: 2019/1/11
-  Time: 21:55
+  Date: 2019/1/12
+  Time: 13:53
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>查询歌曲信息</title>
+    <title>歌曲信息</title>
     <jsp:include page="/resources/layout/_css.jsp"/>
     <link rel="stylesheet" href="${ctx}/resources/css/datapicker/bootstrap-datepicker.css">
 </head>

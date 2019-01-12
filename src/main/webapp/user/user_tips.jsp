@@ -13,7 +13,19 @@
     <link rel="stylesheet" href="${ctx}/resources/css/datapicker/bootstrap-datepicker.css">
 </head>
 
-<body>
-    <a href="${ctx}/UserUtilServlet?state=selectSongType"  class="roll-nav roll-right J_tabExit"><i class="fa fa-registered"></i>注册</a>
+<body style="padding-top: 150px">
+    <div align="center"><h1>您还未登录！</h1></div>
+    <div class="hr-line-dashed"></div>
+    <div class="form-group">
+        <div align="center">
+            <div class="btn btn-primary" >
+                <a href="${ctx}/UserUtilServlet?state=selectSongType"  style="background: #1AB394;border: 0px;color: #FFF7FB;">注册</a>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="btn btn-primary" >
+                <a href="${ctx}/user/user_login.jsp" style="background: #1AB394;border: 0px;color: #FFF7FB;">登录</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

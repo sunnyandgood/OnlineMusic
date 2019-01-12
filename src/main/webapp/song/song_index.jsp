@@ -2,18 +2,27 @@
 <%--
   Created by IntelliJ IDEA.
   User: sunny
-  Date: 2019/1/11
-  Time: 21:55
+  Date: 2019/1/12
+  Time: 15:24
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>查询歌曲信息</title>
+    <title>歌曲信息</title>
     <jsp:include page="/resources/layout/_css.jsp"/>
     <link rel="stylesheet" href="${ctx}/resources/css/datapicker/bootstrap-datepicker.css">
 </head>
-<body style="padding-top: 40px">
+<body>
+<div class="hr-line-dashed"></div>
+<form  class="form-horizontal" method="post" action="/UserUtilServlet?state=query">
+    <div class="col-sm-10" align="right">
+        <input type="text" name="queryInfo"/>
+        <div class="btn btn-primary">
+            <input type="submit" value="查询" style="background: #1AB394;border: 0px;color: #FFF7FB;"/>
+        </div>
+    </div>
+</form>
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-sm-12">

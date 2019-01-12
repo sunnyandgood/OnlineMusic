@@ -1,9 +1,6 @@
 package com.edu.servlet;
 
-import com.edu.bean.SongtypeBean;
-import com.edu.bean.UserBean;
-import com.edu.bean.UserDisplayBean;
-import com.edu.bean.VipBean;
+import com.edu.bean.*;
 import com.edu.service.UserService;
 import com.edu.service.UtilService;
 import com.edu.service.impl.UserServiceImpl;
@@ -49,7 +46,60 @@ public class UserUtilServlet extends HttpServlet {
             this.userInfo(request,response);
         }else if ("signOut".equals(state)){
             this.signOut(request,response);
+        }else if ("querySongType".equals(state)){
+            this.querySongType(request,response);
+        }else if ("querySongByTypeId".equals(state)){
+            this.querySongByTypeId(request,response);
+        }else if ("querySongs".equals(state)){
+            this.querySongs(request,response);
+        }else if ("query".equals(state)){
+            this.query(request,response);
         }
+    }
+
+    private void query(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        String queryInfo = request.getParameter("queryInfo");
+        List<SongDisplayBean> songDisplayBeans = utilService.selectSongs(queryInfo);
+        Integer size = songDisplayBeans.size();
+        for (int i=1;i<=size;i++){
+            songDisplayBeans.get(i-1).setSong_url(i + "");
+        }
+        request.setAttribute("songDisplayBeans",songDisplayBeans);
+        request.getRequestDispatcher("/song/query.jsp").forward(request,response);
+    }
+
+    private void querySongs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        List<SongDisplayBean> songDisplayBeans = utilService.selectSongs();
+        Integer size = songDisplayBeans.size();
+        for (int i=1;i<=size;i++){
+            songDisplayBeans.get(i-1).setSong_url(i + "");
+        }
+        request.setAttribute("songDisplayBeans",songDisplayBeans);
+        request.getRequestDispatcher("/song/song_index.jsp").forward(request,response);
+    }
+
+    private void querySongByTypeId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer typeId = Integer.parseInt(request.getParameter("typeId"));
+        System.out.println(typeId);
+
+        List<SongDisplayBean> songDisplayBeans = utilService.selectSongByTypeId(typeId);
+        Integer size = songDisplayBeans.size();
+        for (int i=1;i<=size;i++){
+            songDisplayBeans.get(i-1).setSong_url(i + "");
+        }
+
+        request.setAttribute("songDisplayBeans",songDisplayBeans);
+        request.getRequestDispatcher("/song/song_bytype.jsp").forward(request,response);
+    }
+
+    private void querySongType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        List<SongtypeBean> songtypeBeanList = utilService.selectSongType();
+
+        request.setAttribute("songtypeBeanList",songtypeBeanList);
+        request.getRequestDispatcher("/index.jsp").forward(request,response);
     }
 
     private void signOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
