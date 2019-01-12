@@ -54,7 +54,53 @@ public class UserUtilServlet extends HttpServlet {
             this.querySongs(request,response);
         }else if ("query".equals(state)){
             this.query(request,response);
+        }else if ("deleteById".equals(state)){
+            this.deleteById(request,response);
+        }else if ("queryUserById".equals(state)){
+            this.queryUserById(request,response);
+        }else if ("updatePassword".equals(state)){
+            this.updatePassword(request,response);
         }
+    }
+
+    private void updatePassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+
+        String userName = request.getParameter("userName");
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+
+        List<UserBean> list = userService.listAll();
+        for (UserBean userBean : list){
+            if (userName.equals(userBean.getUser_name()) &&
+                    oldPassword.equals(userBean.getUser_password())){
+                userBean.setUser_password(newPassword);
+                userService.updateById(userBean);
+                break;
+            }
+        }
+    }
+
+    private void queryUserById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        List<UserBean> userBeans = userService.selectById(userId);
+
+        List<SongtypeBean> songtypeBeanList = utilService.selectSongType();
+
+        request.setAttribute("songtypeBeanList",songtypeBeanList);
+        request.setAttribute("userBeans",userBeans);
+        request.getRequestDispatcher("/user/user_update.jsp").forward(request,response);
+    }
+
+    private void deleteById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        System.out.println(userId);
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("userId");
+
+        Boolean flag = userService.deleteById(userId);
     }
 
     private void query(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

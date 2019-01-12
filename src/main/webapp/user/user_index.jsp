@@ -61,11 +61,12 @@
                         </c:forEach>
                     </form>
 
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <div class="btn btn-primary" onclick="">保存内容</div>
-                        </div>
+                    <div align="center">
+                        <div class="btn btn-primary" onclick="updateUserInfo()" style="width: 110px">修改个人信息</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="btn btn-primary" onclick="updatePassword()" style="width: 110px">修改密码</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="btn btn-primary" onclick="uploadMusic()" style="width: 110px">上传音乐</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="btn btn-primary" onclick="recharge()" style="width: 110px">充值</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="btn btn-primary" onclick="logOff()" style="width: 110px">注销</div>
                     </div>
                 </div>
             </div>
@@ -78,12 +79,44 @@
 <script src="${ctx}/resources/js/datapicker/bootstrap-datepicker.zh-CN.min.js"></script>
 <script>
 
-    function save(){
-        $.post('${ctx}/UserServlet?state=updateById',$('form').serialize(),function (r) {
+    function updateUserInfo(){//修改个人信息
+        layer.open({
+            type: 2,
+            area: ['800px', '500px'],
+            content: '${ctx}/UserUtilServlet?state=queryUserById&userId=' + $('[name=user_id]').val() //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+        });
+    }
+
+    function updatePassword(){//修改密码
+        layer.open({
+            type: 2,
+            area: ['800px', '500px'],
+            content: '${ctx}/user/user_updatePassword.jsp' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+        });
+    }
+
+    function uploadMusic(){//上传音乐
+        $.post('${ctx}/UserUtilServlet?state=uploadMusic&userId=' + $('[name=user_id]').val(),function (r) {
             parent.$('#table').bootstrapTable('refresh');
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             parent.layer.close(index); //再执行关闭
             layer.msg(r.message);
+        });
+    }
+
+    function recharge(){//充值
+        $.post('${ctx}/UserUtilServlet?state=recharge&userId=' + $('[name=user_id]').val(),function (r) {
+            parent.$('#table').bootstrapTable('refresh');
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+            layer.msg(r.message);
+        });
+    }
+
+    function logOff(){//注销
+        $.post('${ctx}/UserUtilServlet?state=deleteById&userId=' + $('[name=user_id]').val(),function (r) {
+            // location.replace(document.referrer);
+            parent.location.reload();
         });
     }
 
