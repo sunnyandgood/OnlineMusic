@@ -27,6 +27,7 @@ public class UserUtilServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UtilService utilService = new UtilServiceImpl();
     private UserService userService = new UserServiceImpl();
+    private SongService songService = new SongServiceImpl();
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
@@ -72,7 +73,19 @@ public class UserUtilServlet extends HttpServlet {
             this.hotDownload(request,response);
         }else if ("click".equals(state)){
             this.click(request,response);
+        }else if ("listen".equals(state)){
+            this.listen(request,response);
         }
+    }
+
+    private void listen(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        Integer song_id = Integer.parseInt(request.getParameter("song_id"));
+        List<SongBean> songBeans = songService.selectById(song_id);
+        String song_url = songBeans.get(0).getSong_url();
+        String listenSongUrl = "file:///" + song_url;
+        request.setAttribute("listenSongUrl",listenSongUrl);
+        request.getRequestDispatcher("/song/listen.jsp").forward(request,response);
     }
 
     private void click(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -111,7 +124,7 @@ public class UserUtilServlet extends HttpServlet {
     private void addSong(HttpServletRequest request, HttpServletResponse response) {
         SongService songService = new SongServiceImpl();
         //得到上传路径的硬盘路径
-        String dir = request.getServletContext().getRealPath("/resources/upload");
+        String dir = request.getServletContext().getRealPath("/resources/upload/");
         String songPath = request.getParameter("songPath");
 
         String path = dir + songPath;
