@@ -92,12 +92,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>com.edu.servlet.RegisterServlet</servlet-class>
+        <servlet-name>UserUtilServlet</servlet-name>
+        <servlet-class>com.edu.servlet.UserUtilServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/RegisterServlet</url-pattern>
+        <servlet-name>UserUtilServlet</servlet-name>
+        <url-pattern>/UserUtilServlet</url-pattern>
     </servlet-mapping>
 
 

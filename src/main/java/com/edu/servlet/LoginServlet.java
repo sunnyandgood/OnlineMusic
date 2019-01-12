@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class LoginServlet extends HttpServlet {
 
     private void userLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("utf-8");
+        HttpSession session = request.getSession();
 
         String userName = request.getParameter("userName");
         String userPassword = request.getParameter("userPassword");
@@ -49,12 +51,13 @@ public class LoginServlet extends HttpServlet {
             if (userName.equals(userBean.getUser_name()) &&
                     userPassword.equals(userBean.getUser_password())){
                 flag = true;
+                session.setAttribute("userId",userBean.getUser_id());
                 break;
             }
         }
 
         if (flag){
-            request.getRequestDispatcher("./user/user_index.jsp").forward(request,response);
+            request.getRequestDispatcher("./index.jsp").forward(request,response);
         }else {
             request.getRequestDispatcher("./user/user_login.jsp").forward(request,response);
         }

@@ -20,7 +20,7 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div align="center"><h3>音乐库管理系统</h3></div>
-                    <form  class="form-horizontal" method="post">
+                    <form  class="form-horizontal" method="post" action="${ctx}/UserUtilServlet?state=addUser">
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">用户名</label>
@@ -74,7 +74,13 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <div class="btn btn-primary" onclick="register()">注册</div>
+                            <div class="btn btn-primary" >
+                                <input type="submit" value="注册" style="background: #1AB394;border: 0px;color: #FFF7FB;"/>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="btn btn-primary" >
+                                <a href="${ctx}/user/user_login.jsp" style="background: #1AB394;border: 0px;color: #FFF7FB;">登录</a>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -110,7 +116,7 @@
         }else if($('[name=type_id]').val()==''){
             layer.msg("喜欢的歌曲类型不能为空");
         }else {
-            $.post('${ctx}/RegisterServlet?state=addUser',$('form').serialize(),function (r) {
+            $.post('${ctx}/UserUtilServlet?state=addUser',$('form').serialize(),function (r) {
 
             });
         }

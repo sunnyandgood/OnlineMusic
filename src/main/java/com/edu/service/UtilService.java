@@ -1,6 +1,7 @@
 package com.edu.service;
 
 import com.edu.bean.SongtypeBean;
+import com.edu.bean.UserDisplayBean;
 import com.edu.bean.VipBean;
 
 import java.util.List;
@@ -12,4 +13,5 @@ import java.util.List;
 public interface UtilService {
     List<VipBean> selectVip();
     List<SongtypeBean> selectSongType();
+    List<UserDisplayBean> selectByUserId(Integer user_id);
 }

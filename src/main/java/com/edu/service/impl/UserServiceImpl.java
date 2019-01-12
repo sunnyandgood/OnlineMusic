@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserBean> listAll() {
-        String sql = "select user_name,user_password from user";
+        String sql = "select * from user";
         List<UserBean> list = (List<UserBean>) dao.query(sql, UserBean.class);
         return list;
     }
