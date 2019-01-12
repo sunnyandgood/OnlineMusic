@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         if (flag){
-            request.getRequestDispatcher("./index.jsp").forward(request,response);
+            request.getRequestDispatcher("/UserUtilServlet?state=userInfo").forward(request,response);
         }else {
             request.getRequestDispatcher("./user/user_login.jsp").forward(request,response);
         }
