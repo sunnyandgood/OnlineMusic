@@ -11,4 +11,5 @@ import java.util.List;
 public interface ClicksService {
     List<ClicksBean> selectAll();
     Boolean deleteById(int click_id);
+    Boolean deleteBySongId(Integer songId);
 }

@@ -19,4 +19,7 @@ public interface UtilService {
     List<SongDisplayBean> selectSongByTypeId(Integer type_id);
     List<SongDisplayBean> selectSongs();
     List<SongDisplayBean> selectSongs(String queryInfo);
+    List<SongDisplayBean> hotSearch();
+    List<SongDisplayBean> hotDownload();
+    Boolean click(Integer userId,Integer songId);
 }

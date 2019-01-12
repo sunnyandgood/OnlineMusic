@@ -27,4 +27,11 @@ public class DownloadServiceImpl implements DownloadService {
         Boolean flag = dao.addObj(sql);
         return flag;
     }
+
+    @Override
+    public Boolean deleteBySongId(Integer songId) {
+        String sql = "delete from download where song_id = '"+songId+"'";
+        Boolean flag = dao.addObj(sql);
+        return flag;
+    }
 }

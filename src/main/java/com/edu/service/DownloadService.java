@@ -11,4 +11,5 @@ import java.util.List;
 public interface DownloadService {
     List<DownloadBean> selectAll();
     Boolean deleteById(int download_id);
+    Boolean deleteBySongId(Integer songId);
 }

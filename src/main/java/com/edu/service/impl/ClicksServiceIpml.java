@@ -27,4 +27,11 @@ public class ClicksServiceIpml implements ClicksService {
         Boolean flag = dao.addObj(sql);
         return flag;
     }
+
+    @Override
+    public Boolean deleteBySongId(Integer songId) {
+        String sql = "delete from clicks where song_id = '"+songId+"'";
+        Boolean flag = dao.addObj(sql);
+        return flag;
+    }
 }

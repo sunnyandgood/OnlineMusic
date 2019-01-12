@@ -140,13 +140,15 @@
                         <i class="fa fa-gear"></i> 主题
                     </a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-2">
-                    通知
-                </a>
+                <li class="">
+                    <a data-toggle="tab" href="#tab-2">
+                        热搜排行榜
+                    </a>
                 </li>
-                <li><a data-toggle="tab" href="#tab-3">
-                    项目进度
-                </a>
+                <li>
+                    <a data-toggle="tab" href="#tab-3">
+                        下载排行榜
+                    </a>
                 </li>
             </ul>
 
@@ -222,6 +224,91 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="tab-2" class="tab-pane">
+                    <div>
+                        <a href="/UserUtilServlet?state=hotSearch">热搜</a>
+                        <c:forEach var="songDisplayBean" items="${songDisplayBeans1 }">
+                            <div class="sidebar-message">
+                                <div class="pull-left text-center">
+                                    <div class="img-circle message-avatar">
+                                        <td align="center"><c:out value="${songDisplayBean.song_url }" /></td>
+                                    </div>
+
+                                    <div class="m-t-xs">
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <div align="center">
+                                        <h5><c:out value="${songDisplayBean.song_name }" /></h5>
+                                    </div>
+                                    <div align="center">
+                                        <a href="/UserUtilServlet?state=click&song_id=<c:out value="${songDisplayBean.song_id }" />">
+                                            <i class="fa fa-heart-o"></i>
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        <a href="/UserUtilServlet?state=listen&song_id=<c:out value="${songDisplayBean.song_id }" />">
+                                            <i class="fa fa-headphones"></i>
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        <a href="/UserUtilServlet?state=download&song_id=<c:out value="${songDisplayBean.song_id }" />">
+                                            <i class="fa fa-download"></i>
+                                        </a>
+                                    </div>
+                                    <br>
+                                    <small class="text-muted">
+                                        歌手:<c:out value="${songDisplayBean.song_singer }" />
+                                    </small>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <div id="tab-3" class="tab-pane">
+                    <div>
+                        <a href="/UserUtilServlet?state=hotDownload">热载</a>
+                        <c:forEach var="songDisplayBean" items="${songDisplayBeans2 }">
+                            <div class="sidebar-message">
+                                <div class="pull-left text-center">
+                                    <div class="img-circle message-avatar">
+                                        <td align="center"><c:out value="${songDisplayBean.song_url }" /></td>
+                                    </div>
+
+                                    <div class="m-t-xs">
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <div align="center">
+                                        <h5><c:out value="${songDisplayBean.song_name }" /></h5>
+                                    </div>
+                                    <div align="center">
+                                        <a href="/UserUtilServlet?state=click&song_id=<c:out value="${songDisplayBean.song_id }" />">
+                                            <i class="fa fa-heart-o"></i>
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        <a href="/UserUtilServlet?state=listen&song_id=<c:out value="${songDisplayBean.song_id }" />">
+                                            <i class="fa fa-headphones"></i>
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        <a href="/UserUtilServlet?state=download&song_id=<c:out value="${songDisplayBean.song_id }" />">
+                                            <i class="fa fa-download"></i>
+                                        </a>
+                                    </div>
+                                    <br>
+                                    <small class="text-muted">
+                                        歌手:<c:out value="${songDisplayBean.song_singer }" />
+                                    </small>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

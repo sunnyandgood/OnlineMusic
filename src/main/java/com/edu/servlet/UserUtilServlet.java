@@ -66,7 +66,46 @@ public class UserUtilServlet extends HttpServlet {
             this.selectVipAndSongType(request, response);
         }else if ("addSong".equals(state)){
             this.addSong(request,response);
+        }else if ("hotSearch".equals(state)){
+            this.hotSearch(request,response);
+        }else if ("hotDownload".equals(state)){
+            this.hotDownload(request,response);
+        }else if ("click".equals(state)){
+            this.click(request,response);
         }
+    }
+
+    private void click(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        HttpSession session = request.getSession();
+        Object userId = session.getAttribute("userId");
+        if (null!=userId){
+            Integer song_id = Integer.parseInt(request.getParameter("song_id"));
+            Boolean flag = utilService.click((Integer) userId, song_id);
+            request.getRequestDispatcher("/index.jsp").forward(request,response);
+        }
+    }
+
+    private void hotDownload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        List<SongDisplayBean> songDisplayBeans = utilService.hotDownload();
+        Integer size = songDisplayBeans.size();
+        for (int i=1;i<=size;i++){
+            songDisplayBeans.get(i-1).setSong_url(i + "");
+        }
+        request.setAttribute("songDisplayBeans2",songDisplayBeans);
+        request.getRequestDispatcher("/index.jsp").forward(request,response);
+    }
+
+    private void hotSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        List<SongDisplayBean> songDisplayBeans = utilService.hotSearch();
+        Integer size = songDisplayBeans.size();
+        for (int i=1;i<=size;i++){
+            songDisplayBeans.get(i-1).setSong_url(i + "");
+        }
+        request.setAttribute("songDisplayBeans1",songDisplayBeans);
+        request.getRequestDispatcher("/index.jsp").forward(request,response);
     }
 
     private void addSong(HttpServletRequest request, HttpServletResponse response) {

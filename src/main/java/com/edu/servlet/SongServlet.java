@@ -4,8 +4,12 @@ import com.edu.bean.SongBean;
 import com.edu.bean.SongDisplayBean;
 import com.edu.bean.SongtypeBean;
 import com.edu.bean.VipBean;
+import com.edu.service.ClicksService;
+import com.edu.service.DownloadService;
 import com.edu.service.SongService;
 import com.edu.service.UtilService;
+import com.edu.service.impl.ClicksServiceIpml;
+import com.edu.service.impl.DownloadServiceImpl;
 import com.edu.service.impl.SongServiceImpl;
 import com.edu.service.impl.UtilServiceImpl;
 import com.edu.util.ExcelUtil;
@@ -17,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,6 +38,9 @@ import java.util.List;
 public class SongServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private SongService songService = new SongServiceImpl();
+
+    private ClicksService clicksService = new ClicksServiceIpml();
+    private DownloadService downloadService = new DownloadServiceImpl();
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
@@ -159,6 +167,20 @@ public class SongServlet extends HttpServlet {
         String songIds = request.getParameter("songIds");
         String[] ids = songIds.split(",");
         for (String id : ids){
+            List<SongBean> songBeans = songService.selectById(Integer.parseInt(id));
+            String song_url = songBeans.get(0).getSong_url();
+            File file = new File(song_url);
+            if (!file.exists()){
+                System.out.println("删除文件失败:" + song_url + "不存在！");
+            }else {
+                if (file.isFile()){
+                    boolean delete = file.delete();
+                    if (delete){
+                        System.out.println("删除文件" + song_url + "成功:");
+                    }
+                }
+            }
+
             songService.deleteById(Integer.parseInt(id));
         }
         request.getRequestDispatcher("./admin/admin_song.jsp").forward(request, response);
@@ -214,6 +236,24 @@ public class SongServlet extends HttpServlet {
 
     private void deleteById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
         Integer songId = Integer.parseInt(request.getParameter("songId"));
+
+        List<SongBean> songBeans = songService.selectById(songId);
+        String song_url = songBeans.get(0).getSong_url();
+        File file = new File(song_url);
+        if (!file.exists()){
+            System.out.println("删除文件失败:" + song_url + "不存在！");
+        }else {
+            if (file.isFile()){
+                boolean delete = file.delete();
+                if (delete){
+                    System.out.println("删除文件成功:" + song_url);
+                }
+            }
+        }
+
+        Boolean clickFlag = clicksService.deleteBySongId(songId);
+        Boolean downloadFlag = downloadService.deleteBySongId(songId);
+
         Boolean flag = songService.deleteById(songId);
 
 //        System.out.println(songId);

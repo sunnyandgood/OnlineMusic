@@ -41,7 +41,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Boolean updateById(SongBean songBean) {
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Dao dao = new Dao();
         String sql = "update song set song_name = '"+songBean.getSong_name()+"' , song_singer = '"+songBean.getSong_singer()+"' ," +
                 "type_id = '"+songBean.getType_id()+"' , song_size = '"+songBean.getSong_size()+"' ," +

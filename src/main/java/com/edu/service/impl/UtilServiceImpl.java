@@ -1,12 +1,12 @@
 package com.edu.service.impl;
 
-import com.edu.bean.SongDisplayBean;
-import com.edu.bean.SongtypeBean;
-import com.edu.bean.UserDisplayBean;
-import com.edu.bean.VipBean;
+import com.edu.bean.*;
 import com.edu.dao.Dao;
 import com.edu.service.UtilService;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class UtilServiceImpl implements UtilService {
     private Dao dao = new Dao();
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public List<VipBean> selectVip() {
         String sql = "select * from vip";
@@ -69,5 +70,55 @@ public class UtilServiceImpl implements UtilService {
                 "query.song_singer like '%"+queryInfo+"%' or query.type_name like '%"+queryInfo+"%'";
         List<SongDisplayBean> list = (List<SongDisplayBean>) dao.query(sql, SongDisplayBean.class);
         return list;
+    }
+
+    @Override
+    public List<SongDisplayBean> hotSearch() {
+        String clicksSql = "select song_id from clicks group by song_id order by count(*) desc limit 10";
+        List<SongBean> songBeans = (List<SongBean>) dao.query(clicksSql, SongBean.class);
+
+        List<SongDisplayBean> list = new ArrayList<>();
+        for (SongBean songBean : songBeans){
+            String sql = "select song_id,song_name,song_singer,type_name,song_clicks,song_download,song_uptime " +
+                    "from song,songtype where song.type_id = songtype.type_id and " +
+                    "song_id = '"+songBean.getSong_id()+"'";
+            List<SongDisplayBean> songDisplayBeans = (List<SongDisplayBean>) dao.query(sql, SongDisplayBean.class);
+            list.add(songDisplayBeans.get(0));
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<SongDisplayBean> hotDownload() {
+        String clicksSql = "select song_id from download group by song_id order by count(*) desc limit 10";
+        List<SongBean> songBeans = (List<SongBean>) dao.query(clicksSql, SongBean.class);
+
+        List<SongDisplayBean> list = new ArrayList<>();
+        for (SongBean songBean : songBeans){
+            String sql = "select song_id,song_name,song_singer,type_name,song_clicks,song_download,song_uptime " +
+                    "from song,songtype where song.type_id = songtype.type_id and " +
+                    "song_id = '"+songBean.getSong_id()+"'";
+            List<SongDisplayBean> songDisplayBeans = (List<SongDisplayBean>) dao.query(sql, SongDisplayBean.class);
+            list.add(songDisplayBeans.get(0));
+        }
+
+        return list;
+    }
+
+    @Override
+    public Boolean click(Integer userId, Integer songId) {
+        String songSql = "update song set song_clicks = song_clicks + 1 where song_id = '"+songId+"'";
+        String clickSql = "insert into clicks (user_id,song_id,click_date) " +
+                "values ('"+userId+"','"+songId+"','"+simpleDateFormat.format(new Date())+"')";
+
+        Boolean songFlag = dao.addObj(songSql);
+        Boolean clickFlag = dao.addObj(clickSql);
+
+        Boolean flag = false;
+        if (songFlag&&clickFlag){
+            flag = true;
+        }
+        return flag;
     }
 }

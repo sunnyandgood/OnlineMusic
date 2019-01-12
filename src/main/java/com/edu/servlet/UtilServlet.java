@@ -40,7 +40,7 @@ public class UtilServlet extends HttpServlet {
     private void upload(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("utf-8");
         //得到上传路径的硬盘路径
-        String savePath = request.getServletContext().getRealPath("/resources/upload");
+        String savePath = request.getServletContext().getRealPath("/resources/upload/");
 
         File fl = new File(savePath);
         System.out.println(savePath);
