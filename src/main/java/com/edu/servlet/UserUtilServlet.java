@@ -1,8 +1,10 @@
 package com.edu.servlet;
 
 import com.edu.bean.*;
+import com.edu.service.SongService;
 import com.edu.service.UserService;
 import com.edu.service.UtilService;
+import com.edu.service.impl.SongServiceImpl;
 import com.edu.service.impl.UserServiceImpl;
 import com.edu.service.impl.UtilServiceImpl;
 
@@ -60,7 +62,71 @@ public class UserUtilServlet extends HttpServlet {
             this.queryUserById(request,response);
         }else if ("updatePassword".equals(state)){
             this.updatePassword(request,response);
+        }else if ("selectVipAndSongType".equals(state)){
+            this.selectVipAndSongType(request, response);
+        }else if ("addSong".equals(state)){
+            this.addSong(request,response);
         }
+    }
+
+    private void addSong(HttpServletRequest request, HttpServletResponse response) {
+        SongService songService = new SongServiceImpl();
+        //得到上传路径的硬盘路径
+        String dir = request.getServletContext().getRealPath("/resources/upload");
+        String songPath = request.getParameter("songPath");
+
+        String path = dir + songPath;
+        String newPath = "";
+
+        String[] split = path.split("\\\\");
+        for (int i=0;i<split.length-1;i++){
+            newPath += split[i];
+            newPath += "/";
+        }
+        newPath += split[split.length-1];
+
+        System.out.println(path);
+        System.out.println(newPath);
+
+        Integer user_id = Integer.parseInt(request.getParameter("user_id"));
+        List<UserBean> userBeans = userService.selectById(user_id);
+        String user_name = userBeans.get(0).getUser_name();
+
+        String song_name = request.getParameter("song_name");
+        Integer type_id = Integer.parseInt(request.getParameter("type_id"));
+        String song_size = request.getParameter("song_size");
+        String song_format = request.getParameter("song_format");
+        Integer vip_id = Integer.parseInt(request.getParameter("vip_id"));
+
+        SongBean songBean = new SongBean();
+        songBean.setSong_name(song_name);
+        songBean.setSong_singer(user_name);
+        songBean.setType_id(type_id);
+        songBean.setSong_size(song_size);
+        songBean.setSong_url(newPath);
+        songBean.setSong_format(song_format);
+        songBean.setSong_clicks(0);
+        songBean.setSong_download(0);
+        songBean.setSong_uptime(new Date());
+        songBean.setVip_id(vip_id);
+
+        Boolean flag = songService.insert(songBean);
+    }
+
+    private void selectVipAndSongType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+
+        List<UserBean> userBeans = userService.selectById(userId);
+        Integer vip_id = userBeans.get(0).getVip_id();
+
+        List<VipBean> vipBeanList = utilService.selectVip(vip_id);
+        List<SongtypeBean> songtypeBeanList = utilService.selectSongType();
+
+        request.setAttribute("user_id",userId);
+        request.setAttribute("vipBeanList",vipBeanList);
+        request.setAttribute("songtypeBeanList",songtypeBeanList);
+        request.getRequestDispatcher("./user/user_addSong.jsp").forward(request, response);
     }
 
     private void updatePassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

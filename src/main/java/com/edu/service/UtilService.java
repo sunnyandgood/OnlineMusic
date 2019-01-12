@@ -13,6 +13,7 @@ import java.util.List;
  */
 public interface UtilService {
     List<VipBean> selectVip();
+    List<VipBean> selectVip(Integer vip_id);
     List<SongtypeBean> selectSongType();
     List<UserDisplayBean> selectByUserId(Integer user_id);
     List<SongDisplayBean> selectSongByTypeId(Integer type_id);

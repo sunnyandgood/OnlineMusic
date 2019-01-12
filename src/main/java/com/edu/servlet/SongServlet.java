@@ -110,12 +110,19 @@ public class SongServlet extends HttpServlet {
         String songPath = request.getParameter("songPath");
 
         String path = dir + songPath;
+        String newPath = "";
+
+        String[] split = path.split("\\\\");
+        for (int i=0;i<split.length-1;i++){
+            newPath += split[i];
+            newPath += "/";
+        }
+        newPath += split[split.length-1];
 
         String song_name = request.getParameter("song_name");
         String song_singer = request.getParameter("song_singer");
         Integer type_id = Integer.parseInt(request.getParameter("type_id"));
         String song_size = request.getParameter("song_size");
-//        String song_url = request.getParameter("song_url");
         String song_format = request.getParameter("song_format");
         Integer vip_id = Integer.parseInt(request.getParameter("vip_id"));
 
@@ -124,7 +131,7 @@ public class SongServlet extends HttpServlet {
         songBean.setSong_singer(song_singer);
         songBean.setType_id(type_id);
         songBean.setSong_size(song_size);
-        songBean.setSong_url(path);
+        songBean.setSong_url(newPath);
         songBean.setSong_format(song_format);
         songBean.setSong_clicks(0);
         songBean.setSong_download(0);

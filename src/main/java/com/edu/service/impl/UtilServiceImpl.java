@@ -23,6 +23,13 @@ public class UtilServiceImpl implements UtilService {
     }
 
     @Override
+    public List<VipBean> selectVip(Integer vip_id) {
+        String sql = "select * from vip where vip_id <= '"+vip_id+"'";
+        List<VipBean> list = (List<VipBean>) dao.query(sql, VipBean.class);
+        return list;
+    }
+
+    @Override
     public List<SongtypeBean> selectSongType() {
         String sql = "select * from songtype";
         List<SongtypeBean> list = (List<SongtypeBean>) dao.query(sql, SongtypeBean.class);

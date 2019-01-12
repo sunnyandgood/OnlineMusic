@@ -96,11 +96,10 @@
     }
 
     function uploadMusic(){//上传音乐
-        $.post('${ctx}/UserUtilServlet?state=uploadMusic&userId=' + $('[name=user_id]').val(),function (r) {
-            parent.$('#table').bootstrapTable('refresh');
-            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-            parent.layer.close(index); //再执行关闭
-            layer.msg(r.message);
+        layer.open({
+            type: 2,
+            area: ['800px', '500px'],
+            content: '${ctx}/UserUtilServlet?state=selectVipAndSongType&userId=' + $('[name=user_id]').val() //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
         });
     }
 
