@@ -69,7 +69,11 @@
         </div>
     </div>
 </div>
-
+<div align="center">
+    <audio src="${listenSongUrl}" controls="controls">
+        Your browser does not support the audio element.
+    </audio>
+</div>
 </body>
 <jsp:include page="/resources/layout/_script.jsp"/>
 <script src="${ctx}/resources/js/datapicker/bootstrap-datepicker.js"></script>

@@ -83,9 +83,12 @@ public class UserUtilServlet extends HttpServlet {
         Integer song_id = Integer.parseInt(request.getParameter("song_id"));
         List<SongBean> songBeans = songService.selectById(song_id);
         String song_url = songBeans.get(0).getSong_url();
-        String listenSongUrl = "file:///" + song_url;
+        int index = song_url.indexOf("/resources");
+        String substring = song_url.substring(index);
+        String listenSongUrl = "." + substring;
+
         request.setAttribute("listenSongUrl",listenSongUrl);
-        request.getRequestDispatcher("/song/listen.jsp").forward(request,response);
+        this.querySongs(request,response);
     }
 
     private void click(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
