@@ -11,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-<audio src="./resources/upload/07718b10-d234-4c8c-8137-348b5639db41.mp3" controls="controls">
+<audio src="./resources/upload/07718b10-d234-4c8c-8137-348b5639db41.mp3" autoplay="autoplay" controls="controls">
     Your browser does not support the audio element.
 </audio>
 ${listenSongUrl}

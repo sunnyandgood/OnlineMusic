@@ -70,7 +70,7 @@
     </div>
 </div>
 <div align="center">
-    <audio src="${listenSongUrl}" controls="controls">
+    <audio src="${listenSongUrl}" autoplay="autoplay" controls="controls">
         Your browser does not support the audio element.
     </audio>
 </div>
