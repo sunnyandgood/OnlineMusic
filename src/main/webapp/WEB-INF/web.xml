@@ -356,4 +356,13 @@
         <url-pattern>/page/user/user_addSong_jsp</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>recharge_jsp</servlet-name>
+        <jsp-file>/WEB-INF/page/user/recharge.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>recharge_jsp</servlet-name>
+        <url-pattern>/page/user/recharge_jsp</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -3,6 +3,7 @@ package com.edu.servlet;
 import com.edu.bean.SongBean;
 import com.edu.bean.SongtypeBean;
 import com.edu.bean.UserBean;
+import com.edu.bean.VipBean;
 import com.edu.service.*;
 import com.edu.service.impl.*;
 
@@ -25,6 +26,7 @@ public class SongUtilServlet extends HttpServlet {
     private ClicksService clicksService = new ClicksServiceIpml();
     private UserService userService = new UserServiceImpl();
     private DownloadService downloadService = new DownloadServiceImpl();
+    private VipService vipService = new VipServiceImpl();
 
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +52,22 @@ public class SongUtilServlet extends HttpServlet {
             this.listen(request,response);
         }else if ("download".equals(state)){
             this.download(request,response);
+        }else if ("selectVip".equals(state)){
+            this.selectVip(request,response);
         }
+    }
+
+    private void selectVip(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        List<VipBean> vipBeans = vipService.listAll();
+        vipBeans.remove(0);
+        for (int i=0;i<vipBeans.size();i++){
+            vipBeans.get(i).setVip(((i+1)*6) + "个月" );
+        }
+
+        request.setAttribute("userId",userId);
+        request.setAttribute("vipBeans",vipBeans);
+        request.getRequestDispatcher("/page/user/recharge_jsp").forward(request,response);
     }
 
     private void downLoad(List<SongBean> songBeans,HttpServletResponse response) throws UnsupportedEncodingException {
