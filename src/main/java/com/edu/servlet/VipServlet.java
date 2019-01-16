@@ -4,6 +4,7 @@ import com.edu.bean.VipBean;
 import com.edu.service.VipService;
 import com.edu.service.impl.VipServiceImpl;
 import com.edu.util.ExcelUtil;
+import com.edu.util.R;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -24,6 +25,8 @@ import java.util.List;
 public class VipServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private VipService vipService = new VipServiceImpl();
+    //这里用了Gson来实现将List这个对象的集合转换成字符串
+    private Gson gson = new Gson();
 
     @Override
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -50,6 +53,8 @@ public class VipServlet extends HttpServlet {
     }
 
     private void addToExcel(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         //获取数据
         List<VipBean> list = vipService.listAll();
 
@@ -70,31 +75,61 @@ public class VipServlet extends HttpServlet {
         HSSFWorkbook workbook = ExcelUtil.getHSSFWorkbook(sheetName, title, values);
         workbook.write(fileOutputStream);
         fileOutputStream.close();
+
+        R r = R.ok("导出成功！");
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
-    private void deleteByIds(ServletRequest request, ServletResponse response) {
+    private void deleteByIds(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         String vipIds = request.getParameter("vipIds");
         String[] ids = vipIds.split(",");
+        Boolean flag = false;
         for (String id :ids){
-            vipService.deleteById(Integer.parseInt(id));
+            Boolean delete = vipService.deletById(Integer.parseInt(id));
+            if (delete.booleanValue()){
+                flag = true;
+            }else {
+                flag = false;
+            }
         }
+
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
-    private void deleteById(ServletRequest request, ServletResponse response) {
+    private void deleteById(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         Integer vipId = Integer.parseInt(request.getParameter("vipId"));
-        vipService.deleteById(vipId);
+        Boolean flag = vipService.deletById(vipId);
+
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
-    private void addVip(ServletRequest request, ServletResponse response) {
+    private void addVip(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         String vip = request.getParameter("vip");
 
         VipBean vipBean = new VipBean();
         vipBean.setVip(vip);
 
         Boolean flag = vipService.insert(vipBean);
+
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
-    private void updateById(ServletRequest request, ServletResponse response) {
+    private void updateById(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         Integer vip_id = Integer.parseInt(request.getParameter("vip_id"));
         String vip = request.getParameter("vip");
 
@@ -102,6 +137,10 @@ public class VipServlet extends HttpServlet {
         vipBean.setVip_id(vip_id);
         vipBean.setVip(vip);
         Boolean flag = vipService.update(vipBean);
+
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void selectById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -109,7 +148,7 @@ public class VipServlet extends HttpServlet {
         Integer vipId = Integer.parseInt(request.getParameter("vipId"));
         List<VipBean> vipBeanList = vipService.selectById(vipId);
         request.setAttribute("vipBeanList",vipBeanList);
-        request.getRequestDispatcher("./admin/update/vip_update.jsp").forward(request,response);
+        request.getRequestDispatcher("/page/admin/update/vip_update_jsp").forward(request,response);
     }
 
     private void listAll(ServletRequest request, ServletResponse response) {
@@ -126,8 +165,6 @@ public class VipServlet extends HttpServlet {
         PageHelper.startPage(pageNumber, pageSize);
         List<VipBean> vips = vipService.listAll();
 
-        //这里用了Gson来实现将List这个对象的集合转换成字符串
-        Gson gson = new Gson();
         //将记录转换成json字符串
         String songJson = gson.toJson(vips);
         String json = "{\"total\":" + vips.size() + ",\"rows\":" + songJson + "}";

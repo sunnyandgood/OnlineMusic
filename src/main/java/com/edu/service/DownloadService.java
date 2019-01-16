@@ -12,4 +12,5 @@ public interface DownloadService {
     List<DownloadBean> selectAll();
     Boolean deleteById(int download_id);
     Boolean deleteBySongId(Integer songId);
+    Boolean download(Integer userId, Integer songId);
 }

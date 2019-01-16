@@ -14,7 +14,9 @@ public class UserBean {
     private String user_name;
     private String user_password;
     private Integer vip_id;
+    private String vip;
     private Date user_birthday;
     private String user_gender;
     private Integer type_id;
+    private String type_name;
 }

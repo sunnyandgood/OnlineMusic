@@ -1,7 +1,5 @@
 package com.edu.servlet;
 
-import com.edu.service.UtilService;
-import com.edu.service.impl.UtilServiceImpl;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -24,8 +21,6 @@ import java.util.UUID;
  */
 public class UtilServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private UtilService utilService = new UtilServiceImpl();
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,7 +64,9 @@ public class UtilServlet extends HttpServlet {
                 name = item.getName();
                 long size = item.getSize();
                 String type = item.getContentType();
+
                 System.out.println(size + " " + type);
+
                 if (name == null || name.trim().equals("")) {
                     continue;
                 }

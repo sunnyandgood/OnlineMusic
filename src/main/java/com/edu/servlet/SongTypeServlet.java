@@ -1,9 +1,12 @@
 package com.edu.servlet;
 
 import com.edu.bean.SongtypeBean;
+import com.edu.service.SongService;
 import com.edu.service.SongTypeService;
+import com.edu.service.impl.SongServiceImpl;
 import com.edu.service.impl.SongTypeServiceImpl;
 import com.edu.util.ExcelUtil;
+import com.edu.util.R;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -24,6 +27,9 @@ import java.util.List;
 public class SongTypeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private SongTypeService songTypeService = new SongTypeServiceImpl();
+    //这里用了Gson来实现将List这个对象的集合转换成字符串
+    private Gson gson = new Gson();
+    private SongService songService = new SongServiceImpl();
 
     @Override
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -48,21 +54,30 @@ public class SongTypeServlet extends HttpServlet {
             this.selectById(request,response);
         }else if ("updateById".equals(state)){
             this.updateById(request,response);
-        }else if ("addManager".equals(state)){
-            this.addManager(request,response);
+        }else if ("addSongType".equals(state)){
+            this.addSongType(request,response);
         }
     }
 
-    private void addManager(ServletRequest request, ServletResponse response) {
+    private void addSongType(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
+
         String type_name = request.getParameter("type_name");
 
         SongtypeBean songtypeBean = new SongtypeBean();
         songtypeBean.setType_name(type_name);
 
-        songTypeService.insert(songtypeBean);
+        Boolean flag = songTypeService.insert(songtypeBean);
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void updateById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
+
         Integer type_id = Integer.parseInt(request.getParameter("type_id"));
         String type_name = request.getParameter("type_name");
 
@@ -70,7 +85,10 @@ public class SongTypeServlet extends HttpServlet {
         songtypeBean.setType_id(type_id);
         songtypeBean.setType_name(type_name);
 
-        songTypeService.update(songtypeBean);
+        Boolean flag = songTypeService.update(songtypeBean);
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void selectById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -79,23 +97,51 @@ public class SongTypeServlet extends HttpServlet {
         List<SongtypeBean> songtypeBeanList = songTypeService.selectById(Integer.parseInt(typeId));
 
         request.setAttribute("songtypeBeanList",songtypeBeanList);
-        request.getRequestDispatcher("./admin/update/songtype_update.jsp").forward(request,response);
+        request.getRequestDispatcher("/page/admin/update/songtype_update_jsp").forward(request,response);
     }
 
-    private void deleteByIds(ServletRequest request, ServletResponse response) {
+    private void deleteByIds(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         String typeIds = request.getParameter("typeIds");
         String[] ids = typeIds.split(",");
+        Boolean flag = false;
         for (String id : ids){
-            songTypeService.deleteById(Integer.parseInt(id));
+            Boolean delete = songTypeService.deleteById(Integer.parseInt(id));
+            if (delete.booleanValue()){
+                flag = true;
+            }else {
+                flag = false;
+            }
         }
+
+        R r = R.modify(flag);
+
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
-    private void deleteById(ServletRequest request, ServletResponse response) {
+    private void deleteById(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         String typeId = request.getParameter("typeId");
-        songTypeService.deleteById(Integer.parseInt(typeId));
+        Boolean deleteSongFlag = songService.deleteByTypeId(Integer.parseInt(typeId));
+        Boolean deleteTypeFlag = songTypeService.deleteById(Integer.parseInt(typeId));
+
+        Boolean flag = false;
+        if (deleteSongFlag && deleteTypeFlag){
+            flag = true;
+        }
+
+        R r = R.modify(flag);
+
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void addToExcel(ServletRequest request, ServletResponse response) throws Exception {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         //获取数据
         List<SongtypeBean> list = songTypeService.listAll();
 
@@ -116,6 +162,10 @@ public class SongTypeServlet extends HttpServlet {
         HSSFWorkbook workbook = ExcelUtil.getHSSFWorkbook(sheetName, title, values);
         workbook.write(fileOutputStream);
         fileOutputStream.close();
+
+        R r = R.ok("导出成功！");
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void listAll(ServletRequest request, ServletResponse response) {
@@ -132,8 +182,6 @@ public class SongTypeServlet extends HttpServlet {
         PageHelper.startPage(pageNumber, pageSize);
         List<SongtypeBean> songtypes = songTypeService.listAll();
 
-        //这里用了Gson来实现将List这个对象的集合转换成字符串
-        Gson gson = new Gson();
         //将记录转换成json字符串
         String songJson = gson.toJson(songtypes);
         String json = "{\"total\":" + songtypes.size() + ",\"rows\":" + songJson + "}";

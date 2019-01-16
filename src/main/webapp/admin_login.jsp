@@ -9,6 +9,7 @@
 <%@page pageEncoding="utf-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<link rel="icon" type="image/png" href="${ctx}/resources/img/favicon.ico">
 <html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8" />
@@ -31,7 +32,7 @@
             <canvas id="demo-canvas"></canvas>
             <div class="logo_box">
                 <h3>音乐库管理系统</h3>
-                <form action="./LoginServlet?state=adminLogin" name="f" method="post">
+                <form action="#" name="f" method="post" id="form1">
                     <div class="input_outer">
                         <span class="u_user"></span>
                         <input name="adminName" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
@@ -41,7 +42,7 @@
                         <input name="adminPassword" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"value="" type="password" placeholder="请输入密码">
                     </div>
                     <div class="act-but submit" href="javascript:;" style="color: #FFFFFF">
-                        <input type="submit" value="登录" style="background: #0096E6;border: 0px;color: #FFF7FB;"/>
+                        <input type="button" value="登录" id="button1" style="background: #0096E6;border: 0px;color: #FFF7FB;"/>
                     </div>
                 </form>
             </div>
@@ -54,6 +55,29 @@
 <script src="${ctx}/resources/js/userlogin/rAF.js"></script>
 <script src="${ctx}/resources/js/userlogin/demo-1.js"></script>
 <script src="${ctx}/resources/js/jquery/jquery-3.2.1.js"></script>
+<script src="${ctx}/resources/js/layer/layer.min.js"></script>
 <script>
+    $(document).ready(function () {
+        $("#button1").click(function () {
+            $.ajax({
+                type:"post",//提交方式
+                dataType: "json",//预期服务器返回的数据类型
+                data:$('#form1').serialize(),//传输的数据
+                url:"${ctx}/LoginServlet?state=adminLogin",//传输路径
+                success:function (msg) {
+                    if (msg.code==200){
+                        layer.msg(msg.message);
+                        window.location.href="${ctx}/page/admin/admin_index_jsp";
+                    } else {
+                        alert(msg.message);
+                        window.location.href="${ctx}/admin_login.jsp";
+                    }
+                },
+                error:function () {
+                    alert("异常！");
+                }
+            });
+        });
+    });
 </script>
 </html>

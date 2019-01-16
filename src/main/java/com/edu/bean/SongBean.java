@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @Author: 王仁洪
- * @Date: 2019/1/7 16:36
+ * @Date: 2019/1/8 21:31
  */
 @Data
 public class SongBean {
@@ -14,6 +14,7 @@ public class SongBean {
     private String song_name;
     private String song_singer;
     private Integer type_id;
+    private String type_name;
     private String song_size;
     private String song_url;
     private String song_format;
@@ -21,4 +22,5 @@ public class SongBean {
     private Integer song_download;
     private Date song_uptime;
     private Integer vip_id;
+    private String vip;
 }

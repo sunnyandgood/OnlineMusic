@@ -39,4 +39,14 @@ public class R extends HashMap<String,Object> {
         super.put(key,value);
         return this;
     }
+
+    public static R modify(Boolean flag){
+        R r = null;
+        if (flag){
+            r = R.ok("成功！");
+        }else {
+            r = R.error("失敗！");
+        }
+        return r;
+    }
 }

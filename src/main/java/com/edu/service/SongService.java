@@ -1,7 +1,6 @@
 package com.edu.service;
 
 import com.edu.bean.SongBean;
-import com.edu.bean.SongDisplayBean;
 
 import java.util.List;
 
@@ -10,9 +9,15 @@ import java.util.List;
  * @Date: 2019/1/7 19:08
  */
 public interface SongService {
-    List<SongDisplayBean> selectAll();
+    List<SongBean> selectAll();
     Boolean deleteById(int song_id);
     List<SongBean> selectById(int song_id);
     Boolean updateById(SongBean songBean);
+//    Boolean insertById(SongBean songBean);
+    List<SongBean> selectSongByTypeId(Integer type_id);
+    List<SongBean> hotSearch();
+    List<SongBean> hotDownload();
+    List<SongBean> fuzzyQuery(String queryInfo);
     Boolean insert(SongBean songBean);
+    Boolean deleteByTypeId(Integer type_id);
 }

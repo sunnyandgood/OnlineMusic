@@ -1,7 +1,6 @@
 package com.edu.service.impl;
 
 import com.edu.bean.UserBean;
-import com.edu.bean.UserDisplayBean;
 import com.edu.dao.Dao;
 import com.edu.service.UserService;
 
@@ -17,16 +16,16 @@ public class UserServiceImpl implements UserService {
     private Dao dao = new Dao();
 
     @Override
-    public List<UserDisplayBean> selectAll() {
+    public List<UserBean> selectAll() {
         String sql = "select user_id,user_name,user_password,vip,user_birthday,user_gender,type_name " +
                 "from user,vip,songtype " +
                 "where user.vip_id = vip.vip_id and user.type_id = songtype.type_id";
-        List<UserDisplayBean> list = (List<UserDisplayBean>) dao.query(sql, UserDisplayBean.class);
+        List<UserBean> list = (List<UserBean>) dao.query(sql, UserBean.class);
         return list;
     }
 
     @Override
-    public Boolean deleteById(int user_id) {
+    public Boolean deletById(int user_id) {
         String sql = "delete from user where user_id = '"+user_id+"'";
         Boolean flag = dao.addObj(sql);
         return flag;
@@ -34,7 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserBean> selectById(int user_id) {
-        String sql = "select * from user where user_id = '"+user_id+"'";
+        String sql = "select *,vip,type_name from user,vip,songtype where user_id = '"+user_id+"' " +
+                "and user.vip_id = vip.vip_id and user.type_id = songtype.type_id";
         List<UserBean> list = (List<UserBean>) dao.query(sql, UserBean.class);
         return list;
     }

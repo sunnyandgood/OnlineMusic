@@ -4,6 +4,7 @@ import com.edu.bean.ManagerBean;
 import com.edu.service.ManagerService;
 import com.edu.service.impl.ManagerServiceImpl;
 import com.edu.util.ExcelUtil;
+import com.edu.util.R;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -12,6 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,16 +30,19 @@ import java.util.List;
 public class ManagerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ManagerService managerService = new ManagerServiceImpl();
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //这里用了Gson来实现将List这个对象的集合转换成字符串
+    private Gson gson = new Gson();
 
     @Override
-    public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         String state = request.getParameter("state");
 
         System.out.println(state);
 
-        if ("listAll".equals(state)){
+        if ("signOut".equals(state)){
+            this.signOut(request,response);
+        }else if ("listAll".equals(state)){
             this.listAll(request,response);
         }else if ("deleteById".equals(state)){
             this.deleteById(request,response);
@@ -58,6 +65,9 @@ public class ManagerServlet extends HttpServlet {
     }
 
     private void updateById(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
+
         Integer manager_id = Integer.parseInt(request.getParameter("manager_id"));
         String manager_name = request.getParameter("manager_name");
         String manager_password = request.getParameter("manager_password");
@@ -67,9 +77,26 @@ public class ManagerServlet extends HttpServlet {
         managerBean.setManager_name(manager_name);
         managerBean.setManager_password(manager_password);
 
-        managerService.update(managerBean);
+        Boolean flag = managerService.update(managerBean);
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
+    }
 
-        request.getRequestDispatcher("./ManagerServlet?state=selectById&managerId=" + manager_id).forward(request,response);
+    private void addManager(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
+        String manager_name = request.getParameter("manager_name");
+        String manager_password = request.getParameter("manager_password");
+
+        ManagerBean managerBean = new ManagerBean();
+        managerBean.setManager_name(manager_name);
+        managerBean.setManager_password(manager_password);
+
+        Boolean flag = managerService.insert(managerBean);
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void selectById(ServletRequest request, ServletResponse response) throws IOException, ServletException {
@@ -78,21 +105,12 @@ public class ManagerServlet extends HttpServlet {
         List<ManagerBean> managerBeanList = managerService.selectById(Integer.parseInt(managerId));
 
         request.setAttribute("managerBeanList",managerBeanList);
-        request.getRequestDispatcher("./admin/update/manager_update.jsp").forward(request, response);
-    }
-
-    private void addManager(ServletRequest request, ServletResponse response) {
-        String manager_name = request.getParameter("manager_name");
-        String manager_password = request.getParameter("manager_password");
-
-        ManagerBean managerBean = new ManagerBean();
-        managerBean.setManager_name(manager_name);
-        managerBean.setManager_password(manager_password);
-
-        managerService.insert(managerBean);
+        request.getRequestDispatcher("/page/admin/update/manager_update_jsp").forward(request, response);
     }
 
     private void addToExcel(ServletRequest request, ServletResponse response) throws Exception {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         //获取数据
         List<ManagerBean> list = managerService.listAll();
 
@@ -109,26 +127,46 @@ public class ManagerServlet extends HttpServlet {
             values[i][0] = list.get(i).getManager_id().toString();
             values[i][1] = list.get(i).getManager_name();
             values[i][2] = list.get(i).getManager_password();
-
-//            System.out.println(list.get(i));
         }
         FileOutputStream fileOutputStream = new FileOutputStream("D:/管理员.xls");
         HSSFWorkbook workbook = ExcelUtil.getHSSFWorkbook(sheetName, title, values);
         workbook.write(fileOutputStream);
         fileOutputStream.close();
+
+        R r = R.ok("导出成功！");
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
-    private void deleteByIds(ServletRequest request, ServletResponse response) {
+    private void deleteByIds(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         String managerIds = request.getParameter("managerIds");
         String[] ids = managerIds.split(",");
-        for (String id : ids){
-            managerService.deleteById(Integer.parseInt(id));
+        Boolean flag = false;
+        for (int i=0;i<ids.length;i++){
+            Boolean delete = managerService.deleteById(Integer.parseInt(ids[i]));
+            if (delete.booleanValue()){
+                flag = true;
+            }else {
+                flag = false;
+            }
         }
+        R r = R.modify(flag);
+
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
-    private void deleteById(ServletRequest request, ServletResponse response) {
+    private void deleteById(ServletRequest request, ServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
         Integer manager_id = Integer.parseInt(request.getParameter("managerId"));
-        managerService.deleteById(manager_id);
+        Boolean flag = managerService.deleteById(manager_id);
+        R r = R.modify(flag);
+
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void listAll(ServletRequest request, ServletResponse response) {
@@ -145,13 +183,24 @@ public class ManagerServlet extends HttpServlet {
         PageHelper.startPage(pageNumber, pageSize);
         List<ManagerBean> managers = managerService.listAll();
 
-        //这里用了Gson来实现将List这个对象的集合转换成字符串
-        Gson gson = new Gson();
         //将记录转换成json字符串
         String songJson = gson.toJson(managers);
         String json = "{\"total\":" + managers.size() + ",\"rows\":" + songJson + "}";
 
         printWriter.write(json);
+    }
+
+    private void signOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
+        HttpSession session = request.getSession();
+
+//        System.out.println(session.getAttribute("adminLoginId"));
+
+        session.removeAttribute("adminLoginId");
+
+//        System.out.println(session.getAttribute("adminLoginId"));
+
+        request.getRequestDispatcher("/admin_login.jsp").forward(request,response);
     }
 
 }

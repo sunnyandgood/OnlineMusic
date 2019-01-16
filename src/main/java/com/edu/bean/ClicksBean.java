@@ -11,7 +11,9 @@ import java.util.Date;
 @Data
 public class ClicksBean {
     private Integer click_id;
+    private Integer user_id;
     private String user_name;
+    private Integer song_id;
     private String song_name;
     private Date click_date;
 }

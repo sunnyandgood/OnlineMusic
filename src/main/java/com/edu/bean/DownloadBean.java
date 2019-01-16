@@ -11,7 +11,9 @@ import java.util.Date;
 @Data
 public class DownloadBean {
     private Integer download_id;
+    private Integer user_id;
     private String user_name;
+    private Integer song_id;
     private String song_name;
     private Date download_date;
 }

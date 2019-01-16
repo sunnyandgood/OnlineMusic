@@ -4,6 +4,8 @@ import com.edu.bean.ClicksBean;
 import com.edu.dao.Dao;
 import com.edu.service.ClicksService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ import java.util.List;
  * @Date: 2019/1/9 18:40
  */
 public class ClicksServiceIpml implements ClicksService {
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Dao dao = new Dao();
 
     @Override
@@ -30,8 +33,32 @@ public class ClicksServiceIpml implements ClicksService {
 
     @Override
     public Boolean deleteBySongId(Integer songId) {
-        String sql = "delete from clicks where song_id = '"+songId+"'";
-        Boolean flag = dao.addObj(sql);
+        String selectSql = "select * from clicks where song_id = '"+songId+"'";
+        List<ClicksBean> list = (List<ClicksBean>) dao.query(selectSql, ClicksBean.class);
+        Boolean flag = false;
+        if (list.size()>0){
+            String sql = "delete from clicks where song_id = '"+songId+"'";
+            flag = dao.addObj(sql);
+        }else {
+            flag = true;
+        }
+
+        return flag;
+    }
+
+    @Override
+    public Boolean click(Integer userId, Integer songId) {
+        String songSql = "update song set song_clicks = song_clicks + 1 where song_id = '"+songId+"'";
+        String clickSql = "insert into clicks (user_id,song_id,click_date) " +
+                "values ('"+userId+"','"+songId+"','"+simpleDateFormat.format(new Date())+"')";
+
+        Boolean songFlag = dao.addObj(songSql);
+        Boolean clickFlag = dao.addObj(clickSql);
+
+        Boolean flag = false;
+        if (songFlag&&clickFlag){
+            flag = true;
+        }
         return flag;
     }
 }

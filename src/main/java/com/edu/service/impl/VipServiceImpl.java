@@ -21,7 +21,7 @@ public class VipServiceImpl implements VipService {
     }
 
     @Override
-    public Boolean deleteById(int vip_id) {
+    public Boolean deletById(int vip_id) {
         String sql = "delete from vip where vip_id = '"+vip_id+"'";
         Boolean flag = dao.addObj(sql);
         return flag;
@@ -46,5 +46,12 @@ public class VipServiceImpl implements VipService {
         String sql = "update vip set vip = '"+vipBean.getVip()+"' where vip_id = '"+vipBean.getVip_id()+"'";
         Boolean flag = dao.addObj(sql);
         return flag;
+    }
+
+    @Override
+    public List<VipBean> selectVip(Integer vip_id) {
+        String sql = "select * from vip where vip_id <= '"+vip_id+"'";
+        List<VipBean> list = (List<VipBean>) dao.query(sql, VipBean.class);
+        return list;
     }
 }

@@ -10,8 +10,9 @@ import java.util.List;
  */
 public interface VipService {
     List<VipBean> listAll();
-    Boolean deleteById(int vip_id);
+    Boolean deletById(int vip_id);
     Boolean insert(VipBean vipBean);
     List<VipBean> selectById(int vip_id);
     Boolean update(VipBean vipBean);
+    List<VipBean> selectVip(Integer vip_id);
 }
