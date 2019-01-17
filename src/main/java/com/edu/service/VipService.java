@@ -15,4 +15,5 @@ public interface VipService {
     List<VipBean> selectById(int vip_id);
     Boolean update(VipBean vipBean);
     List<VipBean> selectVip(Integer vip_id);
+    List<VipBean> selectUpVip(Integer vip_id);
 }

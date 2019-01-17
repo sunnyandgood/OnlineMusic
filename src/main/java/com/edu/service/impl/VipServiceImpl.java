@@ -54,4 +54,12 @@ public class VipServiceImpl implements VipService {
         List<VipBean> list = (List<VipBean>) dao.query(sql, VipBean.class);
         return list;
     }
+
+    @Override
+    public List<VipBean> selectUpVip(Integer vip_id) {
+        String sql = "select * from vip where vip_id > '"+vip_id+"'";
+        List<VipBean> list = (List<VipBean>) dao.query(sql, VipBean.class);
+        return list;
+    }
+
 }

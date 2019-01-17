@@ -17,6 +17,9 @@
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-sm-12">
+            <div class="ibox-title" align="center">
+                充值
+            </div>
             <div class="ibox float-e-margins">
                 <div class="ibox-content" id="parentDiv">
                     <form  class="form-horizontal" method="post" id="form1">
@@ -27,7 +30,7 @@
                                 <div class="col-sm-2">
                                     <input type="radio" class="form-control"  name="vip_id" readonly="readonly" value="<c:out value="${vipBean.vip_id}"/>"/>
                                 </div>
-                                <label class="col-sm-2 control-label">
+                                <label class="col-sm-5 control-label">
                                     <c:out value="${vipBean.vip}"/>
                                 </label>
                             </div>
@@ -57,11 +60,10 @@ function recharge() {
             type:"post",//提交方式
             dataType: "json",//预期服务器返回的数据类型
             data:$('#form1').serialize(),//传输的数据
-            url:"${ctx}/SongTypeServlet?state=updateById",//传输路径
+            url:"${ctx}/SongUtilServlet?state=recharge",//传输路径
             success:function (msg) {
                 if (msg.code==200){
                     layer.msg(msg.message);
-                    parent.$('#table').bootstrapTable('refresh');
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index); //再执行关闭
                 } else {

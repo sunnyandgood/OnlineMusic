@@ -365,4 +365,13 @@
         <url-pattern>/page/user/recharge_jsp</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>purchase_jsp</servlet-name>
+        <jsp-file>/WEB-INF/page/user/purchase.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>purchase_jsp</servlet-name>
+        <url-pattern>/page/user/purchase_jsp</url-pattern>
+    </servlet-mapping>
+
 </web-app>

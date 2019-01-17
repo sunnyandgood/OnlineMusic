@@ -16,6 +16,13 @@ public class UserServiceImpl implements UserService {
     private Dao dao = new Dao();
 
     @Override
+    public Boolean recharge(Integer user_id, Integer vip_id) {
+        String sql = "update user set vip_id = '"+vip_id+"' where user_id = '"+user_id+"'";
+        Boolean flag = dao.addObj(sql);
+        return flag;
+    }
+
+    @Override
     public List<UserBean> selectAll() {
         String sql = "select user_id,user_name,user_password,vip,user_birthday,user_gender,type_name " +
                 "from user,vip,songtype " +

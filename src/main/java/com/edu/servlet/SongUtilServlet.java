@@ -6,6 +6,8 @@ import com.edu.bean.UserBean;
 import com.edu.bean.VipBean;
 import com.edu.service.*;
 import com.edu.service.impl.*;
+import com.edu.util.R;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -27,6 +30,7 @@ public class SongUtilServlet extends HttpServlet {
     private UserService userService = new UserServiceImpl();
     private DownloadService downloadService = new DownloadServiceImpl();
     private VipService vipService = new VipServiceImpl();
+    private Gson gson = new Gson();
 
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,17 +56,48 @@ public class SongUtilServlet extends HttpServlet {
             this.listen(request,response);
         }else if ("download".equals(state)){
             this.download(request,response);
+        }else if ("purchase".equals(state)){
+            this.purchase(request,response);
         }else if ("selectVip".equals(state)){
             this.selectVip(request,response);
+        }else if ("recharge".equals(state)){
+            this.recharge(request,response);
         }
+    }
+
+    private void recharge(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter printWriter = response.getWriter();
+        Integer user_id = Integer.parseInt(request.getParameter("user_id"));
+        Integer vip_id = Integer.parseInt(request.getParameter("vip_id"));
+        Boolean flag = userService.recharge(user_id, vip_id);
+
+        R r = R.modify(flag);
+        String json = gson.toJson(r);
+        printWriter.print(json);
     }
 
     private void selectVip(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer userId = Integer.parseInt(request.getParameter("userId"));
-        List<VipBean> vipBeans = vipService.listAll();
-        vipBeans.remove(0);
+        List<UserBean> userBeans = userService.selectById(userId);
+        Integer vip_id = userBeans.get(0).getVip_id();
+        List<VipBean> vipBeans = vipService.selectUpVip(vip_id);
+        Double rate = 0.8;
         for (int i=0;i<vipBeans.size();i++){
-            vipBeans.get(i).setVip(((i+1)*6) + "个月" );
+            VipBean vipBean = vipBeans.get(i);
+            //计算月数
+            Integer monthNum = (i+1)*6;
+            //得到vip类型
+            String vip = vipBean.getVip();
+            //计算金额
+            Double money = monthNum * 8 * rate;
+            //将金额格式化为小数点后保留两位数字
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+            String formatMoney = decimalFormat.format(money);
+
+            vipBean.setVip(vip + monthNum + "个月共计" + formatMoney);
+//            vipBeans.get(i).setVip(vipBeans.get(i).getVip() + ((i+1)*6) + "个月共计"
+//                    + ((i+1)*6)*8*rate);
         }
 
         request.setAttribute("userId",userId);
@@ -104,6 +139,14 @@ public class SongUtilServlet extends HttpServlet {
         }
     }
 
+    private void purchase(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        Integer user_id = Integer.parseInt(request.getParameter("user_id"));
+        Integer song_id = Integer.parseInt(request.getParameter("song_id"));
+        downloadService.download(user_id,song_id);
+        List<SongBean> songBeans = songService.selectById(song_id);
+        this.downLoad(songBeans,response);
+    }
+
     private void download(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setCharacterEncoding("utf-8");
         //设置ContentType字段值
@@ -126,7 +169,11 @@ public class SongUtilServlet extends HttpServlet {
                 downloadService.download((Integer)loginId,song_id);
                 this.downLoad(songBeans,response);
             }else {
-                request.getRequestDispatcher("/index.jsp").forward(request,response);
+                String purchaseInfo = "您需支付￥" + (songVipId - 1)*2 + "元以购买该歌曲！";
+                request.setAttribute("user_id",(Integer)loginId);
+                request.setAttribute("song_id",song_id);
+                request.setAttribute("purchaseInfo",purchaseInfo);
+                request.getRequestDispatcher("/page/user/purchase_jsp").forward(request,response);
             }
         }
     }

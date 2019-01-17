@@ -15,4 +15,5 @@ public interface UserService {
     Boolean updateById(UserBean userBean);
     Boolean insert(UserBean userBean);
     List<UserBean> listAll();
+    Boolean recharge(Integer user_id,Integer vip_id);
 }
